@@ -1,0 +1,122 @@
+border-1px($color, $type = bottom, $isNeed = true)
+  if $type == bottom
+    $style = {
+      left: 0
+      bottom: 0
+      width: 100%
+      border-top: 1px solid $color
+    }
+  else if $type == top
+    $style = {
+      left: 0
+      top: 0
+      width: 100%
+      border-top: 1px solid $color
+    }
+  else if $type == left
+    $style = {
+      left: 0
+      top: 0
+      height: 100%
+      border-left: 1px solid $color
+    }
+  else if $type == right
+    $style = {
+      right: 0
+      top: 0
+      height: 100%
+      border-left: 1px solid $color
+    }
+
+  if $isNeed
+    position: relative
+
+  &:after
+    {$style}
+    display: block
+    position: absolute
+    content: ''
+
+border-none()
+  &:after
+    display: none
+
+scaleBorder($minDPR, $scale, $className, $pd)
+  @media (-webkit-min-device-pixel-ratio: $minDPR), (min-device-pixel-ratio: $minDPR)
+    .{$className}
+      &::{$pd}
+        transform: $scale
+
+scaleBottomBorder($className, $scaleMethod = scaleY)
+  for $pd in before after
+    scaleBorder(1.5, $scaleMethod + '(0.7)', $className, $pd)
+    scaleBorder(2, $scaleMethod + '(0.5)', $className, $pd)
+    scaleBorder(3, $scaleMethod + '(0.33333333333333)', $className, $pd)
+    scaleBorder(4, $scaleMethod + '(0.25)', $className, $pd)
+
+v-transition($name, $activeCss, $initCss)
+  $enter = $activeCss.enter ? $activeCss.enter:$activeCss
+  $leave = $activeCss.leave ? $activeCss.leave:$activeCss
+  &.{$name}-enter-active
+    {$enter}
+  &.{$name}-leave-active
+    {$leave}
+  &.{$name}-enter, &.{$name}-leave-to
+    {$initCss}
+
+all-center()
+  position: absolute
+  left: 50%
+  top: 50%
+  transform: translate(-50%, -50%)
+
+vertical-center()
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+
+horizontal-center()
+  position: absolute
+  left: 50%
+  transform: translateX(-50%)
+
+record-item()
+  padding: 10px 16px
+  display: flex
+  background: #fff
+  border-1px(#d3d3d3)
+  .left, .right
+    line-height: 24px
+  .right
+    flex: 1
+    text-align: right
+
+scroll(zIndex = 0)
+  overflow: auto
+  -webkit-overflow-scrolling: touch
+  if !!zIndex
+    z-index: zIndex
+
+blue-color-value = #39f
+title-text-color-value = #000
+content-text-color-value = #999
+title-text-font-size = 18px
+content-text-font-size = 14px
+border-radius-value = 8px
+enter-duration-value = 500ms
+leave-duration-value = 300ms
+
+one-level-font-size-value = 18px
+two-level-font-size-value = 16px
+three-level-font-size-value = 14px
+four-level-font-size-value = 12px
+five-level-font-size-value = 10px
+six-level-font-size-value = 8px
+
+header-bg-color-value = #393a3f
+header-height-value = 44px
+footer-height-value = 52px
+
+normal-height-value = 48px
+small-height-value = 36px
+big-height-value = 60px

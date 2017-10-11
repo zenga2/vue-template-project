@@ -1,0 +1,31 @@
+1、封装router的push，back，和replace()方法增加hock
+   1)用户切换效果(这个还需考虑返回键触发的情况)
+   2)切换页面时传递参数,因为query只适用于push()
+    pageParam:{
+        pushQuery:{},
+        backQuery:{},
+        from:'<String router的name>'
+    }
+
+    两种缓存方式，不需要考虑刷新就用内存，考虑刷新就用sessionStorage
+
+2、封装组件时尽量用数据表示dom的状态，然后用指令绑定到component中，减少直接操作dom
+   这样虽然(在某些情景下)有性能损失，但实现更优雅，敲代码的效率更高
+
+   利用数据模式来描述组件，一切通过修改数据，然后交给Vue来更新变化
+
+3、封装组件pageUtils
+   1) 提供push,replace,back三个方法,其中back可以回退多个页面(传参实现)
+      同时都可以向目标页传参
+   2) 每个页面提供enterPage和leavePage方法，并提供enterQuery和backQuery参数
+      分别代表push和back穿过来的的参数，还有enterType: (push|replace|back)
+   3) 通过封装beforeRouteEnter来实现(深入了解后可以换成其他)
+      最好用一种全局的方法实现(再看一下全局mixin为啥不行)，实在不行就考虑局部的mixin
+   4) 区分页面的跳转是程序调api的结果，还是用户点击原生返回键的结果
+
+  争取下个项目能投入使用
+
+4、afterEach中发page事件，同时缓存to和from，在每个page里的created或者mounted中运行第一次
+   enterPage和绑定page事件为以后运行做准备，同时在beforeDestroy解除事件绑定
+
+5、写一个预绑定指令
