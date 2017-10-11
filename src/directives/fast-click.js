@@ -1,22 +1,25 @@
-import {Touch} from '../common/js/utils/eventUtils'
+import { Touch, fireEvent } from '../common/js/utils/eventUtils'
 
 const storeMap = new Map()
 const MAX_DIS = 10
 const MAX_INTERVAL = 350
 
+// .pre: 预绑定 同时value要传一个数组[childClass, handle]
 export default {
-  bind(el, binding) {
-    let fn = binding.value
+  bind (el, binding) {
+    const touch = new Touch(el, {
+      end (e) {
+        // 是否是预绑定
+        let isPreBind = binding.modifiers && binding.modifiers.pre
 
-    let touch = new Touch(el, {
-      end(e) {
         let disX = this.currX - this.startX
         let disY = this.currY - this.startY
         let dis = Math.sqrt(disX * disX + disY * disY)
+
         let interval = this.endTime - this.startTime
 
         if (interval < MAX_INTERVAL && dis < MAX_DIS && !this.isCancel) {
-          fn && fn(e)
+          fireEvent(e, isPreBind, binding.value)
         }
       }
     })
@@ -24,7 +27,7 @@ export default {
     storeMap.set(el, touch)
   },
 
-  unbind(el) {
+  unbind (el) {
     let touch = storeMap.get(el)
 
     if (touch) {

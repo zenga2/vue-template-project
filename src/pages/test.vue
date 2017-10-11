@@ -26,21 +26,21 @@
 
 <script type="text/ecmascript-6">
   export default {
-    data() {
+    data () {
       return {
         isShow: true
       }
     },
     methods: {
-      onClick() {
-        console.log('on click')
+      onClick (e) {
+        console.log(e, 'on click')
       },
 
-      onLongPress() {
+      onLongPress () {
         console.log('on long press')
       }
     },
-    created() {
+    created () {
       window.vm = this
     }
   }
