@@ -33,7 +33,6 @@ export default {
     }
 
     storeMap.set(el, currElData)
-    console.log('bind', storeMap)
   },
 
   unbind(el) {
@@ -43,6 +42,5 @@ export default {
       data.touch.destroy()
       storeMap.delete(el)
     }
-    console.log('unbind', storeMap)
   }
 }
