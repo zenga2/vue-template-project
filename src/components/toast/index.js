@@ -1,6 +1,6 @@
-import { createAndAppendEl } from '@common/js/utils/domUtils'
+import { createAndAppendEl } from '../../common/utils/domUtils'
 import Vue from 'vue'
-import toast from './toast'
+import toast from './toast.vue'
 
 export default class Toast {
     constructor (message, duration, onFinish) {
