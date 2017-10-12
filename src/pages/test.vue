@@ -1,6 +1,6 @@
 <template>
-  <div id="wrapper" v-fast-click.pre="['text', onClick]" v-long-press.pre="['pull-right', onLongPress]">
-    <div v-if="isShow" id="scroller">
+  <div id="wrapper" v-pre-bind:mousedown="['text', onClick]">
+    <div v-if="isShow" id="scroller" v-pre-bind:mousedown="['text', onLongPress]">
       <div class="content-wrapper">
         <ul class="content-list" style="height: 1200px; background: #000;">
           <li class="item">
@@ -11,7 +11,7 @@
               </h6>
               <div class="info-bottom">
                 <p class="pull-left"><span>APP开户</span><span>中国银行网点</span></p>
-                <p class="pull-right">11/27 13:45:01</p>
+                <p class="pull-right">11/27 13:45:01 <span style="margin-left: 30px">sdkfhksdfhks</span></p>
               </div>
             </div>
             <div class="status-wrapper">
@@ -32,12 +32,12 @@
       }
     },
     methods: {
-      onClick (e) {
-        console.log(e, 'on click')
+      onClick (currEl, e) {
+        console.log(currEl, e, 'on click')
       },
 
-      onLongPress () {
-        console.log('on long press')
+      onLongPress (currEl, e) {
+        console.log(currEl, e.target, 'on long press')
       }
     },
     created () {
