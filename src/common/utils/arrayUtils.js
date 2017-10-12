@@ -1,13 +1,30 @@
-function removeItem (item, arr) {
-    let index = arr.indexOf(item)
+function remove (item, arr) {
+  let index = arr.indexOf(item)
 
-    if (index > -1) {
-        arr.splice(index, 1)
-    }
+  if (index > -1) {
+    arr.splice(index, 1)
+  }
 }
 
 function includes (item, arr) {
-    return arr.indexOf(item) > -1
+  return arr.indexOf(item) > -1
 }
 
-export { removeItem, includes }
+// 数组去重
+function unique (arr) {
+  let tmpArr = []
+  let item
+
+  for (let i = 0, len = arr.length; i < len; i++) {
+    item = arr[i]
+    if (tmpArr.indexOf(item) === -1) {
+      tmpArr.push(item)
+    }
+  }
+
+  return tmpArr
+}
+
+export { remove, includes, unique }
+
+
