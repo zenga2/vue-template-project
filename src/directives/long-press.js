@@ -18,7 +18,7 @@ export default {
           let isPreBind = binding.modifiers && binding.modifiers.pre
 
           currElData.timeoutId = window.setTimeout(() => {
-            fireEvent(e, isPreBind, binding.value)
+            fireEvent(e, isPreBind, binding.value, el)
           }, MIN_DURATION)
         },
 

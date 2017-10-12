@@ -126,14 +126,14 @@ function isSupportsPassive () {
   return supportsPassive
 }
 
-function fireEvent (e, isPreBind, fn) {
+function fireEvent (e, isPreBind, fn, rootEl) {
   let targrt = e.target
   let childClass, childEl
 
   if (isPreBind) {
     childClass = fn[0]
     fn = fn[1]
-    childEl = findAncestor(targrt, childClass, el)
+    childEl = findAncestor(targrt, childClass, rootEl)
     if (childEl) {
       targrt = childEl
     }

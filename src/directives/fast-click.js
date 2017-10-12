@@ -19,7 +19,7 @@ export default {
         let interval = this.endTime - this.startTime
 
         if (interval < MAX_INTERVAL && dis < MAX_DIS && !this.isCancel) {
-          fireEvent(e, isPreBind, binding.value)
+          fireEvent(e, isPreBind, binding.value, el)
         }
       }
     })

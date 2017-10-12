@@ -1,6 +1,6 @@
 <template>
-  <div id="wrapper" v-fast-click="onClick" v-long-press="onLongPress">
-    <div v-if="isShow" id="scroller" v-long-press="onLongPress">
+  <div id="wrapper" v-fast-click.pre="['text', onClick]" v-long-press.pre="['pull-right', onLongPress]">
+    <div v-if="isShow" id="scroller">
       <div class="content-wrapper">
         <ul class="content-list" style="height: 1200px; background: #000;">
           <li class="item">
