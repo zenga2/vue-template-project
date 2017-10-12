@@ -1,7 +1,7 @@
 import Ajax from './ajax'
 import serviceConfig from '@/service.config'
 import globalConfig from '@/global.config'
-import {each, CustomError} from '@common/js/utils/utils'
+import {each, CustomError} from '../../common/utils/utils'
 import Vue from 'vue'
 
 let ldService = {
