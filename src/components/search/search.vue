@@ -7,7 +7,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import { runDelay } from '../../common/js/utils/utils'
+    import { runDelay } from '../../common/utils/utils'
 
     export default {
         props: {

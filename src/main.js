@@ -10,8 +10,8 @@ import App from './App.vue'
 import router from './router'
 import vueCookie from 'vue-cookie'
 import directive from './directives'
-import ldUtils from './common/js/utils/ldUtils'
-import ldService from './common/js/ld-service'
+import ldUtils from './common/utils/ldUtils'
+import ldService from './plugins/ld-service'
 import globalConfig from './global.config'
 
 Vue.use(vueCookie)

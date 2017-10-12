@@ -20,7 +20,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {each, deepClone} from '../common/js/utils/utils'
+  import {each, deepClone} from '../common/utils/utils'
   import cell from '../components/cell/cell.vue'
   import ldFooter from '../components/ld-footer/ld-footer.vue'
 

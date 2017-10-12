@@ -1,4 +1,4 @@
-import { serialize, addDataToUrl } from '../utils/urlUtils'
+import { serialize, addDataToUrl } from '../../common/utils/urlUtils'
 
 const defaultOpt = {
     timeout: 120 * 1000,

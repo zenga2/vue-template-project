@@ -10,7 +10,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import { isArray } from '../../common/js/utils/typeUtils'
+    import { isArray } from '../../common/utils/typeUtils'
 
     export default {
         props: {

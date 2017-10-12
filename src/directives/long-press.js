@@ -1,4 +1,4 @@
-import { Touch, fireEvent } from '../common/js/utils/eventUtils'
+import { Touch, fireEvent } from '../common/utils/eventUtils'
 
 const storeMap = new Map()
 const MIN_DURATION = 350

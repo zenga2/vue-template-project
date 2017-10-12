@@ -1,4 +1,4 @@
-import { fireEvent } from '../common/js/utils/eventUtils'
+import { fireEvent } from '../common/utils/eventUtils'
 
 const storeMap = new Map()
 

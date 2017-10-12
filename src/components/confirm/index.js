@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { createAndAppendEl } from '../../common/js/utils/domUtils'
+import { createAndAppendEl } from '../../common/utils/domUtils'
 import confirmComponent from './confirm.vue'
 
 const defaultOpts = {
