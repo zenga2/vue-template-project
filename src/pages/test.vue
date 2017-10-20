@@ -1,61 +1,45 @@
 <template>
   <div id="wrapper">
-    <cell label="初始模块"
-          :value="currItem.label"
-          :clickFn="toggle"
-          isLink isSingle
-    ></cell>
-    <selectbox
-        ref="selectbox"
-        :dataList="dataList"
-        :value="initItem"
-        @change="changeInitModule"
-    ></selectbox>
+    <selectAddress
+        :provinceData="provinceData"
+        :cityData="cityData"
+        :countyData="countyData"
+        v-model="addressItem"
+    ></selectAddress>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import selectbox from '../components/selectbox/selectbox.vue'
-  import cell from '../components/cell/cell.vue'
+  import selectAddress from '../components/select-address/select-address.vue'
 
   export default {
     data () {
       return {
         isShow: true,
-        initItem: {value: 10},
-        currItem: {label: '选项11'},
-        dataList: [
-          {label: '选项1', value: 0},
-          {label: '选项2', value: 1},
-          {label: '选项3', value: 2},
-          {label: '选项4', value: 3},
-          {label: '选项5', value: 4},
-          {label: '选项6', value: 5},
-          {label: '选项7', value: 6},
-          {label: '选项8', value: 7},
-          {label: '选项9', value: 8},
-          {label: '选项10', value: 9},
-          {label: '选项11', value: 10},
-          {label: '选项12', value: 11},
-          {label: '选项13', value: 12},
-          {label: '选项14', value: 13},
-          {label: '选项15', value: 14}
-        ]
+        provinceData: [],
+        cityData: [],
+        countyData: [],
+        addressItem: {}
       }
     },
-    methods: {
-      toggle () {
-        this.$refs.selectbox.toggle()
-      },
-
-      changeInitModule (data) {
-        this.currItem = data
-      }
-    },
+    methods: {},
     created () {
       window.vm = this
+      this.$ldService.getAddressData()
+        .then(({provinceList, cityList, countyList}) => {
+          this.provinceData = provinceList
+            .map(({province: label, provinceID: value}) => ({label, value}))
+
+          this.cityData = cityList
+            .map(({city: label, cityID: value, father: provinceId}) =>
+              ({label, value, provinceId}))
+
+          this.countyData = countyList.map(
+            ({area: label, areaID: value, cityId, provinceId}) =>
+              ({label, value, cityId, provinceId}))
+        })
     },
-    components: {selectbox, cell}
+    components: {selectAddress}
   }
 </script>
 

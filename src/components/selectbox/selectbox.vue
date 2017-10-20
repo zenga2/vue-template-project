@@ -42,8 +42,9 @@
     },
     methods: {
       changeState (currItem) {
-        this.pValue = currItem.value
         this.$emit('input', currItem)
+
+        this.pValue = currItem.value
       },
 
       deleteFn () {

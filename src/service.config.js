@@ -1,5 +1,6 @@
 export default {
-    service: {
-        login: 'adminUserBgLogin'
-    }
+  service: {
+    login: 'adminUserBgLogin',
+    getAddressData: 'addressRelateResource'
+  }
 }
