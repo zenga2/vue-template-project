@@ -41,7 +41,8 @@
   // 或者让该父组件为全屏
 
   const thisPropArr = ['provinceItem', 'cityItem', 'countyItem']
-  const dataPropArr = ['provinceId', 'cityId', 'countyId']
+  const valuePropArr = ['provinceId', 'cityId', 'countyId']
+  const labelPropArr = ['provinceName', 'cityName', 'countyName']
 
   export default {
     props: {
@@ -106,18 +107,36 @@
         this.$nextTick(() => {
           let data = {}
 
-          dataPropArr.forEach((dProp, index) => {
+          valuePropArr.forEach((dProp, index) => {
             let thisProp = thisPropArr[index]
+            let lProp = labelPropArr[index]
+            let currItem = this[thisProp]
 
-            if (this[thisProp] && this[thisProp].value !== undefined) {
-              data[dProp] = this[thisProp].value
+            if (currItem && currItem.value !== undefined) {
+              data[dProp] = currItem.value
+              data[lProp] = currItem.label
             }
           })
 
           this.$emit('input', data)
           this.$emit('change', data)
         })
-      })
+      }),
+
+      refreshAddress (currAddress, fn) {
+        let promise = this.$nextTick()
+
+        valuePropArr.forEach((dProp, index) => {
+          promise = promise.then(() => {
+            let thisProp = thisPropArr[index]
+            let thisValue = this[thisProp].value
+
+            fn && fn(currAddress[dProp], thisProp, thisValue)
+
+            return this.$nextTick()
+          })
+        })
+      }
     },
     watch: {
       value: {
@@ -127,16 +146,25 @@
             return
           }
 
-          // 过滤到v-model导致的调用
-          dataPropArr.forEach((dProp, index) => {
-            let thisProp = thisPropArr[index]
-
-            if (newAddress[dProp] !== this[thisProp].value) {
-              this[thisProp] = {value: newAddress[dProp]}
+          this.refreshAddress(newAddress, (dataValue, thisProp, thisValue) => {
+            if (dataValue !== thisValue) {
+              this[thisProp] = {value: dataValue}
             }
           })
         },
         deep: true
+      }
+    },
+    mounted () {
+      let currAddress = this.value
+
+      // 初始化时填充地址
+      if (typeof currAddress === 'object' && Object.keys(currAddress).length > 0) {
+        this.refreshAddress(currAddress, (dataValue, thisProp) => {
+          if (dataValue !== undefined) {
+            this[thisProp] = {value: dataValue}
+          }
+        })
       }
     },
     components: {cell, selectbox}
