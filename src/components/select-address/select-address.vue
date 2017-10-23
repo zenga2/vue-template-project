@@ -31,6 +31,7 @@
 <script type="text/ecmascript-6">
   import cell from '../cell/cell.vue'
   import selectbox from '../selectbox/selectbox.vue'
+  import { runDelay } from '../../common/utils/utils'
 
   // provinceData: label value
   // cityData: provinceId label value
@@ -38,6 +39,9 @@
   // label是名称 value是编号
   // 要确保本组件的父组件中不要使用过渡和动画效果，否则fixed的效果会变成absolute
   // 或者让该父组件为全屏
+
+  const thisPropArr = ['provinceItem', 'cityItem', 'countyItem']
+  const dataPropArr = ['provinceId', 'cityId', 'countyId']
 
   export default {
     props: {
@@ -48,9 +52,9 @@
     },
     data () {
       return {
-        provinceItem: this.value.provinceItem,
-        cityItem: this.value.cityItem,
-        countyItem: this.value.countyItem
+        provinceItem: {},
+        cityItem: {},
+        countyItem: {}
       }
     },
     computed: {
@@ -59,12 +63,11 @@
       },
 
       cityList () {
-        // 因为下面两行赋值语句只会调用setter，不会调用getter
-        // 所以该计算属性不会把cityItem和countyItem加入依赖列表
-        // 所以下面两行代码的意思是当provinceId变化时，清空cityId和countyId
+        // 因为下面这行赋值语句只会调用setter，不会调用getter
+        // 所以该计算属性不会把cityItem加入依赖列表
+        // 所以下面这行代码的意思是当provinceId变化时，清空cityId
         // Vue检测依赖项的逻辑放在getter中
         this.cityItem = {}
-        this.countyItem = {}
 
         if (this.provinceItem && this.provinceItem.value) {
           return this.cityData
@@ -75,6 +78,10 @@
       },
 
       countyList () {
+        // 因为下面这行赋值语句只会调用setter，不会调用getter
+        // 所以该计算属性不会把countyItem加入依赖列表
+        // 所以下面这行代码的意思是当provinceId或者cityId变化时，清空countyId
+        // Vue检测依赖项的逻辑放在getter中
         this.countyItem = {}
 
         if (this.provinceItem && this.provinceItem.value
@@ -93,34 +100,43 @@
         this.$refs[boxKey].toggle()
       },
 
-      changeAddress () {
+      // 当多次触发时，只调用一次
+      changeAddress: runDelay(function () {
         // 延时确保数据已更新
         this.$nextTick(() => {
-          let data = {
-            provinceItem: this.provinceItem,
-            cityItem: this.cityItem,
-            countyItem: this.countyItem
-          }
+          let data = {}
+
+          dataPropArr.forEach((dProp, index) => {
+            let thisProp = thisPropArr[index]
+
+            if (this[thisProp] && this[thisProp].value !== undefined) {
+              data[dProp] = this[thisProp].value
+            }
+          })
 
           this.$emit('input', data)
           this.$emit('change', data)
         })
-      }
+      })
     },
     watch: {
-      value (newItem) {
-        if (!newItem) {
-          this.provinceItem = this.cityItem = this.countyItem
-          return
-        }
-
-        // 过滤到v-model导致的调用
-        const props = ['provinceItem', 'cityItem', 'countyItem']
-        props.forEach(prop => {
-          if (newItem[prop] !== this[prop]) {
-            this[prop] = newItem[prop]
+      value: {
+        handler (newAddress) {
+          if (!newAddress) {
+            this.provinceItem = this.cityItem = this.countyItem = {}
+            return
           }
-        })
+
+          // 过滤到v-model导致的调用
+          dataPropArr.forEach((dProp, index) => {
+            let thisProp = thisPropArr[index]
+
+            if (newAddress[dProp] !== this[thisProp].value) {
+              this[thisProp] = {value: newAddress[dProp]}
+            }
+          })
+        },
+        deep: true
       }
     },
     components: {cell, selectbox}

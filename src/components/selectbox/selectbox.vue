@@ -22,9 +22,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-  // v-model必须传一个对象
-  // 没有v-model,使用change也能运行
-
   export default {
     props: {
       needDeleteBtn: {type: Boolean, default: true},
@@ -41,14 +38,8 @@
       }
     },
     methods: {
-      changeState (currItem) {
-        this.$emit('input', currItem)
-
-        this.pValue = currItem.value
-      },
-
       deleteFn () {
-        this.changeState({})
+        this.pValue = undefined
 
         this.hide()
       },
@@ -72,7 +63,7 @@
 
         if (target.classList.contains('item')) {
           index = target.dataset.index
-          this.changeState(this.dataList[index])
+          this.pValue = this.dataList[index].value
         }
 
         this.hide()
@@ -95,15 +86,19 @@
         }
       },
 
-      value (newObj) {
-        if (!newObj && this.pValue !== undefined) {
-          this.pValue = undefined
-          return
-        }
+      value: {
+        handler (newObj) {
+          if (!newObj && this.pValue !== undefined) {
+            this.pValue = undefined
+            return
+          }
 
-        if (newObj && newObj.value !== this.pValue) {
-          this.pValue = newObj.value
-        }
+          // 过滤到v-model导致的调用
+          if (newObj && newObj.value !== this.pValue) {
+            this.pValue = newObj.value
+          }
+        },
+        deep: true
       },
 
       pValue (newValue) {
@@ -116,6 +111,7 @@
           }
         }
 
+        this.$emit('input', currItem)
         this.$emit('change', currItem)
       }
     },
