@@ -24,7 +24,7 @@ const DEFAULT_OPTS = {
       let data = response.data
 
       if (typeof data === 'string') {
-        response.data = JSON.stringify(data)
+        response.data = JSON.parse(data)
       }
     } catch (e) {
       response = Promise.reject({
