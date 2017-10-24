@@ -165,6 +165,7 @@
         .cancel, .delete
           position: absolute
           line-height: 45px
+          font-size: three-level-font-size-value
         .cancel
           right: 15px
         .delete
@@ -185,6 +186,7 @@
           list-style: none
           line-height: 38px
           border-1px(#d9d9d9)
+          font-size: three-level-font-size-value
           color: #666
           &.on
             color: #fff

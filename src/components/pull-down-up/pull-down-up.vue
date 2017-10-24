@@ -33,7 +33,8 @@
       // 需要返回一个Promise对象
       refreshData: {type: Function},
       // 需要返回一个Promise对象
-      loadData: {type: Function}
+      loadData: {type: Function},
+      preventDefaultException: {type: Object}
     },
     data () {
       return {
@@ -188,10 +189,17 @@
     },
     mounted () {
       let wrapper = this.$refs.wrapper
+      let preventDefaultException
 
       // 当有下拉刷新时，使其可滑动
       if (this.refreshData) {
         wrapper.firstElementChild.style.minHeight = '101%'
+      }
+
+      if (this.preventDefaultException) {
+        preventDefaultException = Object.assign(
+          {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/},
+          this.preventDefaultException)
       }
 
       this.$nextTick(() => {

@@ -1,8 +1,14 @@
 <template>
   <div class="select-address">
-    <cell @click.native="toggleBox('province')" label="省份" :value="provinceItem.label" isLink></cell>
-    <cell @click.native="toggleBox('city')" label="城市" :value="cityItem.label" isLink></cell>
-    <cell @click.native="toggleBox('county')" label="县/区" :value="countyItem.label" isLink
+    <cell @click.native="toggleBox('province')"
+          class="cell-item"
+          label="省份" :value="provinceItem.label" isLink></cell>
+    <cell @click.native="toggleBox('city')"
+          class="cell-item"
+          label="城市" :value="cityItem.label" isLink></cell>
+    <cell @click.native="toggleBox('county')"
+          class="cell-item"
+          label="县/区" :value="countyItem.label" isLink
           isSingle></cell>
     <selectbox
         title="请选择省份"
@@ -171,4 +177,10 @@
   }
 </script>
 
+<style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl"
+
+  .select-address > .cell-item.cell > .value-text
+    color: blue-color-value
+</style>
 <style lang="stylus" rel="stylesheet/stylus" scoped></style>
