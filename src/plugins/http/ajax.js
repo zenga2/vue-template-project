@@ -1,18 +1,22 @@
+import createError from './create-error'
+import Cancel from 'cancel'
+import { each } from '../../common/utils/utils'
+
 // only support get and post method
 // errorType: timeoutError abortError networkError applicationError
 export default function ajax (opts) {
   return new Promise((resolve, reject) => {
     // init
-    let xhr = new XMLHttpRequest()
+    let xhr = opts.xhr = new XMLHttpRequest()
     let {url, method, headers, body} = opts
 
     // open
     xhr.open(method, url, true)
 
     // set request headers
-    for (let [key, value] of headers) {
+    each(headers, (value, key) => {
       xhr.setRequestHeader(key, value)
-    }
+    })
 
     // set props
     if (opts.timeout) {
@@ -23,7 +27,12 @@ export default function ajax (opts) {
     }
 
     // init event
-    initEvent(xhr, resolve, reject)
+    initEvent(opts, resolve, reject)
+
+    // cancel request handle
+    if (opts.cancel instanceof Cancel) {
+      opts.cancel.setXhr(xhr, reject, opts)
+    }
 
     // send data
     xhr.send(body)
@@ -31,40 +40,35 @@ export default function ajax (opts) {
 }
 
 // init event
-function initEvent (xhr, resolve, reject) {
+function initEvent (opts, resolve, reject) {
+  let xhr = opts.xhr
+
   xhr.ontimeout = () => {
-    reject(createError('timeoutError', 'Timeout error', xhr))
+    reject(createError('timeoutError', 'Timeout error', opts))
   }
 
   xhr.onabort = () => {
-    reject(createError('abortError', 'Abort error', xhr))
+    reject(createError('abortError', 'Abort error', opts))
   }
 
   xhr.onerror = () => {
-    reject(createError('networkError', 'Network error', xhr))
+    reject(createError('networkError', 'Network error', opts))
   }
 
-  xhr.onload = () => handle(xhr, resolve, reject)
+  xhr.onload = () => handle(opts, resolve, reject)
 }
 
-function handle (xhr, resolve, reject) {
+function handle (opts, resolve, reject) {
+  let xhr = opts.xhr
+
   if (xhr.status >= 200 && xhr.status < 300) {
     resolve({
       data: xhr.response,
       status: xhr.status,
       statusText: xhr.statusText,
-      xhr
+      opts
     })
   } else {
-    reject(createError('applicationError', 'Application level error', xhr))
-  }
-}
-
-function createError (errorType, desc, xhr) {
-  return {
-    errorType, desc,
-    status: xhr.status,
-    statusText: xhr.statusText,
-    xhr
+    reject(createError('applicationError', 'Application level error', opts))
   }
 }
