@@ -1,5 +1,6 @@
 import { addDataToUrl, serialize } from '../../common/utils/urlUtils'
 import { isObject } from '../../common/utils/typeUtils'
+import createError from './create-error'
 
 const contentTypeMap = {
   urlencoded: 'application/x-www-form-urlencoded;charset=utf-8',
@@ -58,10 +59,9 @@ export default {
         response.data = JSON.parse(data)
       }
     } catch (e) {
-      response = Promise.reject({
-        errorType: 'dataError',
-        desc: 'Data error',
-      })
+      response = Promise.reject(
+        createError('dataError', 'Data error', response.opts)
+      )
     }
 
     return response

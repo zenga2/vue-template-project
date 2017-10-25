@@ -14,8 +14,7 @@ http.interceptors.request.use(opts => {
   if (opts.needAccessToken !== false) {
     commonParam.loginToken = Vue.ldUtils.getAccessToken()
   }
-
-  Object.assign(opts.data, commonParam)
+  Object.assign(opts.body, commonParam)
 
   // 开启等待层
   if (opts.isShowLoading !== false) {
@@ -71,7 +70,7 @@ function dealSuccess (response) {
     return Promise.reject()
   }
 
-  return response
+  return response.data
 }
 
 function dealError (error) {

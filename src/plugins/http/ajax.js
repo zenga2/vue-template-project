@@ -1,5 +1,5 @@
 import createError from './create-error'
-import Cancel from 'cancel'
+import Cancel from './cancel'
 import { each } from '../../common/utils/utils'
 
 // only support get and post method
