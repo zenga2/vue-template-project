@@ -2,7 +2,6 @@ import ajax from './ajax'
 import InterceptorManager from './interceptor-manager'
 import DEFAULT_OPTS from './default-opts'
 import Cancel from './cancel'
-import createError from './create-error'
 
 export default class Http {
   constructor (opts) {
