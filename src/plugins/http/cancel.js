@@ -1,5 +1,7 @@
 import createError from './create-error'
 
+// 这个是一次性的
+// 即一个cancel对象只能用于一次请求
 export default class Cancel {
   constructor () {
     this.promise = new Promise(resolve => {
@@ -16,6 +18,8 @@ export default class Cancel {
   }
 
   stop () {
+    if (!this.promise) return
+
     this.promise.then(() => {
       let {currXhr, xhrReject, opts} = this
 
