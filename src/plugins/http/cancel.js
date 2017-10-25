@@ -1,29 +1,39 @@
 import createError from './create-error'
 
 export default class Cancel {
+  constructor () {
+    this.promise = new Promise(resolve => {
+      this.resolve = resolve
+    })
+  }
+
   setXhr (xhr, reject, opts) {
     this.currXhr = xhr
-    this.reject = reject
+    this.xhrReject = reject
     this.opts = opts
+    // trigger promise
+    this.resolve()
   }
 
   stop () {
-    let {currXhr, reject, opts} = this
+    this.promise.then(() => {
+      let {currXhr, xhrReject, opts} = this
 
-    if (!currXhr) return
+      if (!currXhr) return
 
-    if ('abort' in currXhr) {
-      currXhr.abort()
+      if ('abort' in currXhr) {
+        currXhr.abort()
 
-      reject && reject(
-        createError('cancelRequest', 'Cancel request', opts || {})
-      )
-    }
+        xhrReject && xhrReject(
+          createError('cancelRequest', 'Cancel request', opts || {})
+        )
+      }
 
-    this.clear()
+      this.clear()
+    })
   }
 
   clear () {
-    this.currXhr = this.reject = this.opts = null
+    this.resolve = this.promise = this.currXhr = this.reject = this.opts = null
   }
 }

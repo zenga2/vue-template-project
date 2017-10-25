@@ -6,8 +6,13 @@ import Vue from 'vue'
 
 const http = new Http()
 
+function log (msg) {
+  console.log(msg)
+}
+
 // ajax开始前的处理
 http.interceptors.request.use(opts => {
+  log('request-1')
   // 在每次请求前给url添加公共的query参数
   let commonParam = {}
 
@@ -24,14 +29,27 @@ http.interceptors.request.use(opts => {
   return opts
 })
 
+http.interceptors.request.use(
+  (opts) => {
+    log('request-2-s')
+    return opts
+  },
+  (error) => {
+    log('request-2-e')
+    return Promise.reject(error)
+  }
+)
+
 // ajax完成后的处理(包含出错)
 http.interceptors.response.use(
   response => {
+    log('response-1-s')
     dealLoading(response.opts)
 
     return response
   },
   error => {
+    log('response-1-e')
     dealLoading(error.opts)
 
     return Promise.reject(error)
@@ -52,6 +70,7 @@ http.interceptors.response.use(dealSuccess, dealError)
 const needReLoginResultArr = []
 
 function dealSuccess (response) {
+  log('response-2-s')
   let data = response.data
   let {result, msg} = data
 
@@ -74,9 +93,13 @@ function dealSuccess (response) {
 }
 
 function dealError (error) {
+  log('response-2-e')
   let tipStr = ''
 
   switch (error.errorType) {
+    case 'dealOptionsError':
+      tipStr = '请求参数错误'
+      break
     case 'networkError':
       tipStr = '网络异常'
       break
@@ -96,6 +119,7 @@ function dealError (error) {
       tipStr = '未知错误'
   }
 
+  console.error(error)
   Vue.ldUtils.toast(tipStr)
   return Promise.reject()
 }

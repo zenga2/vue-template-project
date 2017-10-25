@@ -48,10 +48,12 @@ export default {
   headers: {},
   body: null,
   transformRequest (opts) {
+    console.log('transformRequest')
     preDealRequest(opts)
     return opts
   },
   transformResponse (response) {
+    console.log('transformResponse')
     try {
       let data = response.data
 
