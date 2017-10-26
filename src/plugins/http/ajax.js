@@ -6,6 +6,20 @@ import { each } from '../../common/utils/utils'
 // errorType: timeoutError abortError networkError applicationError
 export default function ajax (opts) {
   return new Promise((resolve, reject) => {
+    // detecting network status
+    if (typeof window !== 'undefined'
+      && !!window.navigator
+      && 'onLine' in window.navigator
+      && window.navigator.onLine === false) {
+      reject({
+        errorType: 'offlineError',
+        desc: 'offline error',
+        opts
+      })
+
+      return
+    }
+
     // init
     let xhr = opts.xhr = new XMLHttpRequest()
     let {url, method, headers, body} = opts
@@ -56,6 +70,12 @@ function initEvent (opts, resolve, reject) {
   }
 
   xhr.onload = () => handle(opts, resolve, reject)
+
+  xhr.onloadend = () => {
+    if (opts.cancel instanceof Cancel) {
+      opts.cancel.clear()
+    }
+  }
 }
 
 function handle (opts, resolve, reject) {

@@ -97,6 +97,9 @@ function dealError (error) {
   let tipStr = ''
 
   switch (error.errorType) {
+    case 'offlineError':
+      tipStr = '网络中断'
+      break
     case 'dealOptionsError':
       tipStr = '请求参数错误'
       break
