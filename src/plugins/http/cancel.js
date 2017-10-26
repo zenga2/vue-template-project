@@ -29,7 +29,7 @@ export default class Cancel {
         currXhr.abort()
 
         xhrReject && xhrReject(
-          createError('cancelRequest', 'Cancel request', opts || {})
+          createError('cancelRequest', 'Cancel request', opts)
         )
       }
 
