@@ -30,7 +30,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    data() {
+    data () {
       return {
         username: '',
         password: '',
@@ -38,15 +38,15 @@
       }
     },
     computed: {
-      toggleBtnClass() {
+      toggleBtnClass () {
         return this.isShowPassword ? 'visible' : 'hide'
       },
-      isPassBaseCheck() {
+      isPassBaseCheck () {
         return this.username.length > 0 && this.password.length > 0
       }
     },
     methods: {
-      togglePwdIuput() {
+      togglePwdIuput () {
         this.isShowPassword = !this.isShowPassword
       },
       toLogin() {
@@ -66,7 +66,7 @@
         })
       }
     },
-    mounted() {}
+    mounted () {}
   }
 </script>
 

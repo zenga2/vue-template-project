@@ -55,7 +55,11 @@ export default function ajax (opts) {
 
 // init event
 function initEvent (opts, resolve, reject) {
-  let xhr = opts.xhr
+  let {xhr, onUploadProgress} = opts
+
+  if (typeof onUploadProgress === 'function' && xhr.upload) {
+    xhr.upload.onprogress = onUploadProgress
+  }
 
   xhr.ontimeout = () => {
     reject(createError('timeoutError', 'Timeout error', opts))

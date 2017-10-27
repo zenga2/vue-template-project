@@ -1,12 +1,17 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view :exclude="exclude"></router-view>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
-    name: 'app'
+    name: 'app',
+    data () {
+      return {
+        exclude: /^n_/
+      }
+    }
   }
 </script>
 
