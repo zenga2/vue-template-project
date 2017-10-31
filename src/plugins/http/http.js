@@ -2,6 +2,7 @@ import ajax from './ajax'
 import InterceptorManager from './interceptor-manager'
 import DEFAULT_OPTS from './default-opts'
 import Cancel from './cancel'
+import { deepClone } from '../../common/utils/utils'
 
 export default class Http {
   constructor (opts) {
@@ -72,10 +73,11 @@ export default class Http {
   }
 }
 
-function dealOpts (opts) {
-  opts.headers = Object.assign({}, opts.headers)
-  opts.params = {}
-  opts.body = null
+function dealOpts (originalOpts) {
+  let opts = deepClone(originalOpts)
+
+  let fnProps = ['transformRequest', 'transformResponse']
+  fnProps.forEach(prop => opts[prop] = originalOpts[prop])
 
   return opts
 }
