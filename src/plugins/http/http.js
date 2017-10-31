@@ -2,13 +2,10 @@ import ajax from './ajax'
 import InterceptorManager from './interceptor-manager'
 import DEFAULT_OPTS from './default-opts'
 import Cancel from './cancel'
-import {deepClone} from '../../common/utils/utils'
 
 export default class Http {
   constructor (opts) {
     this.defaultOpts = Object.assign({}, DEFAULT_OPTS, opts)
-    // 消除对象值的干扰
-    this.defaultOpts = deepClone(this.defaultOpts)
     this.interceptors = {
       request: new InterceptorManager(),
       response: new InterceptorManager()
@@ -17,8 +14,6 @@ export default class Http {
 
   request (url, options) {
     let requestOpts = Object.assign({url}, this.defaultOpts, options)
-    // 消除对象值的干扰
-    requestOpts = deepClone(requestOpts)
 
     let dispatchRequest = (opts) => {
       // transform request options
