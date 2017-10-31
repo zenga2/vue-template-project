@@ -6,6 +6,7 @@ import Cancel from './cancel'
 export default class Http {
   constructor (opts) {
     this.defaultOpts = Object.assign({}, DEFAULT_OPTS, opts)
+    this.defaultOpts = dealOpts(this.defaultOpts)
     this.interceptors = {
       request: new InterceptorManager(),
       response: new InterceptorManager()
@@ -14,6 +15,7 @@ export default class Http {
 
   request (url, options) {
     let requestOpts = Object.assign({url}, this.defaultOpts, options)
+    requestOpts = dealOpts(requestOpts)
 
     let dispatchRequest = (opts) => {
       // transform request options
@@ -68,4 +70,12 @@ export default class Http {
   static createCancel () {
     return new Cancel()
   }
+}
+
+function dealOpts (opts) {
+  opts.headers = Object.assign({}, opts.headers)
+  opts.params = {}
+  opts.body = null
+
+  return opts
 }
