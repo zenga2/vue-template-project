@@ -6,10 +6,6 @@ import Vue from 'vue'
 
 const http = new Http()
 
-function log (msg) {
-  console.log(msg)
-}
-
 // ajax开始前的处理
 http.interceptors.request.use(opts => {
   log('request-1')
@@ -28,17 +24,6 @@ http.interceptors.request.use(opts => {
 
   return opts
 })
-
-http.interceptors.request.use(
-  (opts) => {
-    log('request-2-s')
-    return opts
-  },
-  (error) => {
-    log('request-2-e')
-    return Promise.reject(error)
-  }
-)
 
 // ajax完成后的处理(包含出错)
 http.interceptors.response.use(
