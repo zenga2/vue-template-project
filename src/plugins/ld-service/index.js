@@ -77,7 +77,7 @@ function dealSuccess (response) {
   if (needReLoginResultArr.indexOf(result) > -1) {
     Vue.ldUtils.alert({
       content: '请重新登录',
-      onOK: () => Vue.router.replace('/login')
+      onOk: () => Vue.router.replace('/login')
     })
 
     return Promise.reject()

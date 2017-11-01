@@ -16,12 +16,12 @@ const defaultOpts = {
 export default class Confirm {
     constructor (opts) {
         let data = Object.assign({}, defaultOpts, opts)
-        let onOK = () => {}
+        let onOk = () => {}
         let onCancel = () => {}
 
-        if (data.onOK) {
-            onOK = data.onOK
-            delete data.onOK
+        if (data.onOk) {
+            onOk = data.onOk
+            delete data.onOk
         }
 
         if (data.onCancel) {
@@ -32,7 +32,7 @@ export default class Confirm {
         new Vue({
             el: createAndAppendEl('div', document.body),
             data,
-            methods: {onOK, onCancel},
+            methods: {onOk, onCancel},
             template: `<confirm
                         :title="title"
                         :titleColor="titleColor"
@@ -42,7 +42,7 @@ export default class Confirm {
                         :okBtnColor="okBtnColor"
                         :cancelBtnText="cancelBtnText"
                         :cancelBtnColor="cancelBtnColor"
-                        :onOK="onOK"
+                        :onOk="onOk"
                         :onCancel="onCancel"></confirm>`,
             components: {confirm: confirmComponent}
         })

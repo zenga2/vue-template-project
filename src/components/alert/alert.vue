@@ -20,7 +20,7 @@
             contentColor: {type: String},
             btnText: {type: String, default: '确定'},
             btnColor: {type: String},
-            onOK: {type: Function}
+            onOk: {type: Function}
         },
         data () {
             return {
@@ -42,7 +42,7 @@
                     this.toggleState = false
                     setTimeout(() => {
                         this.isRemove = true
-                        this.onOK && this.onOK()
+                        this.onOk && this.onOk()
                     }, 150)
                 })
             }

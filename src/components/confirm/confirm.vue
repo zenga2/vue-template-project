@@ -23,7 +23,7 @@
             okBtnColor: {type: String},
             cancelBtnText: {type: String, default: '取消'},
             cancelBtnColor: {type: String},
-            onOK: {type: Function},
+            onOk: {type: Function},
             onCancel: {type: Function}
         },
         data () {

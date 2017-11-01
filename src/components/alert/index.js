@@ -14,17 +14,17 @@ const defaultOpts = {
 export default class Alert {
     constructor (opts) {
         let data = Object.assign({}, defaultOpts, opts)
-        let onOK = () => {}
+        let onOk = () => {}
 
-        if (data.onOK) {
-            onOK = data.onOK
-            delete data.onOK
+        if (data.onOk) {
+            onOk = data.onOk
+            delete data.onOk
         }
 
         new Vue({
             el: createAndAppendEl('div', document.body),
             data,
-            methods: {onOK},
+            methods: {onOk},
             template: `<alert
                         :title="title" 
                         :titleColor="titleColor"
@@ -32,7 +32,7 @@ export default class Alert {
                         :contentColor="contentColor" 
                         :btnText="btnText" 
                         :btnColor="btnColor" 
-                        :onOK="onOK"
+                        :onOk="onOk"
                        ></alert>`,
             components: {alert: alertComponent}
         })
