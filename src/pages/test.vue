@@ -20,7 +20,6 @@
             :show-loading="true"
             :loading-size="48"
             loading-color="#39f"
-            @file-choose="onFileChoose"
             @new-image="onNewImage"
             @image-remove="onImageRemove"
             @loading-start="onLoadingStart"
@@ -63,10 +62,6 @@
       },
       zoomOut () {
         this.$refs.myCroppa.zoomOut()
-      },
-
-      onFileChoose () {
-        console.log('onFileChoose')
       },
 
       onNewImage () {

@@ -4,7 +4,7 @@ import { each } from '../../common/utils/utils'
 
 // only support get and post method
 // errorType: timeoutError abortError networkError applicationError
-export default function ajax (opts) {
+export default function ajax(opts) {
   return new Promise((resolve, reject) => {
     // detecting network status
     if (typeof window !== 'undefined'
@@ -54,7 +54,7 @@ export default function ajax (opts) {
 }
 
 // init event
-function initEvent (opts, resolve, reject) {
+function initEvent(opts, resolve, reject) {
   let {xhr, onUploadProgress} = opts
 
   if (typeof onUploadProgress === 'function' && xhr.upload) {
@@ -82,7 +82,7 @@ function initEvent (opts, resolve, reject) {
   }
 }
 
-function handle (opts, resolve, reject) {
+function handle(opts, resolve, reject) {
   let xhr = opts.xhr
 
   if (xhr.status >= 200 && xhr.status < 300) {

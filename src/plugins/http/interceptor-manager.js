@@ -1,9 +1,9 @@
 export default class InterceptorManager {
-  constructor () {
+  constructor() {
     this.handlers = []
   }
 
-  use (fulfilled, rejected) {
+  use(fulfilled, rejected) {
     this.handlers.push({
       fulfilled: fulfilled,
       rejected: rejected
@@ -11,18 +11,18 @@ export default class InterceptorManager {
     return this.handlers.length - 1
   }
 
-  eject (id) {
+  eject(id) {
     if (this.handlers[id]) {
       this.handlers[id] = null
     }
   }
 
-  reverse () {
+  reverse() {
     this.handlers.reverse()
     return this
   }
 
-  forEach (fn) {
+  forEach(fn) {
     this.handlers.forEach(handle => {
       if (handle !== null) {
         fn(handle)

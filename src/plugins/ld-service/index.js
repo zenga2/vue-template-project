@@ -6,6 +6,10 @@ import Vue from 'vue'
 
 const http = new Http()
 
+function log(msg) {
+  console.log(msg)
+}
+
 // ajax开始前的处理
 http.interceptors.request.use(opts => {
   log('request-1')
@@ -13,14 +17,19 @@ http.interceptors.request.use(opts => {
   let commonParam = {}
 
   if (opts.needAccessToken !== false) {
-    commonParam.loginToken = Vue.ldUtils.getAccessToken()
+    // commonParam.access_token = Vue.ldUtils.getAccessToken()
+    // todo 上线前修改
+    commonParam.access_token = 'tqxpBvzbi2wpBjbxtqxdsjhxt6xdnj6'
+    // 判断是否已登录
+    if (!commonParam.access_token) {
+      reLogin()
+      return
+    }
   }
   Object.assign(opts.body, commonParam)
 
   // 开启等待层
-  if (opts.isShowLoading !== false) {
-    Vue.ldUtils.loading.show()
-  }
+  toggleLoading(opts, true)
 
   return opts
 })
@@ -29,21 +38,32 @@ http.interceptors.request.use(opts => {
 http.interceptors.response.use(
   response => {
     log('response-1-s')
-    dealLoading(response.opts)
+    toggleLoading(response.opts, false)
 
     return response
   },
   error => {
     log('response-1-e')
-    dealLoading(error.opts)
+    toggleLoading(error.opts, false)
 
     return Promise.reject(error)
   }
 )
 
-function dealLoading (opts) {
-  if (opts.isLast !== false) {
-    // 关闭等待层
+// flag  true: show  false: hide
+function toggleLoading(opts, flag) {
+  // set text
+  let loadingText = opts.loadingText || '加载中'
+  Vue.ldUtils.loading.setText(loadingText)
+
+  // show
+  if (flag && opts.isShowLoading !== false) {
+    Vue.ldUtils.loading.show()
+    return
+  }
+
+  // hide
+  if (!flag && opts.isLast !== false) {
     Vue.ldUtils.loading.hide()
   }
 }
@@ -51,19 +71,29 @@ function dealLoading (opts) {
 // 处理返回的数据
 http.interceptors.response.use(dealSuccess, dealError)
 
-// 需要重新登录的错误码列表
-const needReLoginResultArr = []
+// 处理登录权限的问题
+function checkPermissions(isLogOut, isPower) {
+  // isLogOut：1 需要登录    0 不需要登录
+  // isPower   1 有权限      0 无权限
+  return !(isLogOut === 1 || isPower === 0)
+}
 
-function dealSuccess (response) {
+function reLogin() {
+  Vue.ldUtils.alert({
+    content: '请重新登录',
+    onOk: () => window.location.href = 'http://crm.imlaidian.com/platform_web/login.jsp'
+  })
+}
+
+function dealSuccess(response) {
+  console.log(response)
   log('response-2-s')
   let data = response.data
-  let {result, msg} = data
+  let {isLogOut, isPower, result, msg} = data
 
-  if (needReLoginResultArr.indexOf(result) > -1) {
-    Vue.ldUtils.alert({
-      content: '请重新登录',
-      onOk: () => Vue.router.replace('/login')
-    })
+  // 处理权限的问题
+  if (!checkPermissions(isLogOut, isPower)) {
+    reLogin()
 
     return Promise.reject()
   }
@@ -77,7 +107,7 @@ function dealSuccess (response) {
   return response.data
 }
 
-function dealError (error) {
+function dealError(error) {
   log('response-2-e')
   let tipStr = ''
 
@@ -114,7 +144,7 @@ function dealError (error) {
 
 const ldService = {
   // 等所有service调用都返回成功后，才会执行回调函数
-  runAll (opts) {
+  runAll(opts) {
     let pList = []
     let fnArr = []
 
@@ -165,7 +195,7 @@ each(serviceConfig.service, function (action, method) {
 })
 
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.ldService = Vue.prototype.$ldService = ldService
   }
 }

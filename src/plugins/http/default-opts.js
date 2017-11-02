@@ -1,6 +1,7 @@
 import { addDataToUrl, serialize } from '../../common/utils/urlUtils'
-import { isObject } from '../../common/utils/typeUtils'
 import createError from './create-error'
+import { isPlainObject } from '../../common/utils/typeUtils'
+import { each } from '../../common/utils/utils'
 
 const contentTypeMap = {
   urlencoded: 'application/x-www-form-urlencoded;charset=utf-8',
@@ -8,8 +9,8 @@ const contentTypeMap = {
   text: 'text/plain;charset=utf-8'
 }
 
-function preDealRequest (opts) {
-  let {url, method, params, body} = opts
+function preDealRequest(opts) {
+  let {url, method, params} = opts
   method = method.toLowerCase()
 
   switch (method) {
@@ -17,25 +18,40 @@ function preDealRequest (opts) {
       opts.url = addDataToUrl(url, params)
       break
     case 'post':
-      if (opts.headers['Content-Type']) return
+      dealPostRequest(opts)
+      break
+  }
+}
 
-      let requestType = opts.requestType
-      if (requestType === 'urlencoded') {
-        opts.headers['Content-Type'] = contentTypeMap.urlencoded
-        opts.body = serialize(body)
-        return
+function dealPostRequest(opts) {
+  let body = opts.body
+
+  if (opts.headers['Content-Type']) return
+
+  switch (opts.requestType) {
+    case 'urlencoded':
+      opts.headers['Content-Type'] = contentTypeMap.urlencoded
+      opts.body = serialize(body)
+      break
+    case 'json':
+      opts.headers['Content-Type'] = contentTypeMap.json
+      if (isPlainObject(body)) {
+        opts.body = JSON.stringify(body)
       }
-
-      if (requestType === 'json') {
-        opts.headers['Content-Type'] = contentTypeMap.json
-        if (isObject(body)) {
-          opts.body = JSON.stringify(body)
-        }
-        return
-      }
-
-      if (requestType === 'text') {
-        opts.headers['Content-Type'] = contentTypeMap.text
+      break
+    case 'text':
+      opts.headers['Content-Type'] = contentTypeMap.text
+      break
+    case 'formData':
+      console.log(body)
+      if (isPlainObject(body)) {
+        let formData = new FormData()
+        each(body, (value, key) => {
+          console.log(key, value)
+          formData.append(key, value)
+        })
+        opts.body = formData
+        console.log(formData)
       }
       break
   }
@@ -47,12 +63,12 @@ export default {
   params: {},
   headers: {},
   body: null,
-  transformRequest (opts) {
+  transformRequest(opts) {
     console.log('transformRequest')
     preDealRequest(opts)
     return opts
   },
-  transformResponse (response) {
+  transformResponse(response) {
     console.log('transformResponse')
     try {
       let data = response.data

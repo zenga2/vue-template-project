@@ -42,6 +42,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
     .ld-toast
         .toast-box
+            z-index: 10000
             position: fixed
             top: 36%
             left: 50%

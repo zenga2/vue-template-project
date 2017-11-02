@@ -2,10 +2,10 @@ import ajax from './ajax'
 import InterceptorManager from './interceptor-manager'
 import DEFAULT_OPTS from './default-opts'
 import Cancel from './cancel'
-import { deepClone } from '../../common/utils/utils'
+import { isPlainObject } from '../../common/utils/typeUtils'
 
 export default class Http {
-  constructor (opts) {
+  constructor(opts) {
     this.defaultOpts = Object.assign({}, DEFAULT_OPTS, opts)
     this.defaultOpts = dealOpts(this.defaultOpts)
     this.interceptors = {
@@ -14,7 +14,7 @@ export default class Http {
     }
   }
 
-  request (url, options) {
+  request(url, options) {
     let requestOpts = Object.assign({url}, this.defaultOpts, options)
     requestOpts = dealOpts(requestOpts)
 
@@ -59,25 +59,27 @@ export default class Http {
     return promise
   }
 
-  get (url, opts) {
+  get(url, opts) {
     this.request(url, opts)
   }
 
-  post (url, data, opts) {
+  post(url, data, opts) {
     opts.body = data
     this.request(url, opts)
   }
 
-  static createCancel () {
+  static createCancel() {
     return new Cancel()
   }
 }
 
-function dealOpts (originalOpts) {
-  let opts = deepClone(originalOpts)
-
-  let fnProps = ['transformRequest', 'transformResponse']
-  fnProps.forEach(prop => opts[prop] = originalOpts[prop])
+// deal props: params body headers
+function dealOpts(opts) {
+  opts.params = Object.assign({}, opts.params)
+  opts.headers = Object.assign({}, opts.headers)
+  if (isPlainObject(opts.body)) {
+    opts.body = Object.assign({}, opts.body)
+  }
 
   return opts
 }

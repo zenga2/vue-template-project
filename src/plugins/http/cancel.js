@@ -3,13 +3,13 @@ import createError from './create-error'
 // 这个是一次性的
 // 即一个cancel对象只能用于一次请求
 export default class Cancel {
-  constructor () {
+  constructor() {
     this.promise = new Promise(resolve => {
       this.resolve = resolve
     })
   }
 
-  setXhr (xhr, reject, opts) {
+  setXhr(xhr, reject, opts) {
     this.currXhr = xhr
     this.xhrReject = reject
     this.opts = opts
@@ -17,7 +17,7 @@ export default class Cancel {
     this.resolve()
   }
 
-  stop () {
+  stop() {
     if (!this.promise) return
 
     this.promise.then(() => {
@@ -37,7 +37,7 @@ export default class Cancel {
     })
   }
 
-  clear () {
+  clear() {
     this.resolve = this.promise = this.currXhr = this.reject = this.opts = null
   }
 }

@@ -1,13 +1,15 @@
 <template>
   <div id="app">
-    <router-view :exclude="exclude"></router-view>
+    <keep-alive :exclude="exclude">
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
     name: 'app',
-    data () {
+    data() {
       return {
         exclude: /^n_/
       }

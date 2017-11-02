@@ -1,4 +1,4 @@
-export default function createError (errorType, desc, opts) {
+export default function createError(errorType, desc, opts) {
   let xhr = opts.xhr
 
   return {
