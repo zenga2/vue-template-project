@@ -43,15 +43,12 @@ function dealPostRequest(opts) {
       opts.headers['Content-Type'] = contentTypeMap.text
       break
     case 'formData':
-      console.log(body)
       if (isPlainObject(body)) {
         let formData = new FormData()
         each(body, (value, key) => {
-          console.log(key, value)
           formData.append(key, value)
         })
         opts.body = formData
-        console.log(formData)
       }
       break
   }
@@ -63,6 +60,9 @@ export default {
   params: {},
   headers: {},
   body: null,
+  // timeout
+  // withCredentials
+  // cancel
   transformRequest(opts) {
     console.log('transformRequest')
     preDealRequest(opts)

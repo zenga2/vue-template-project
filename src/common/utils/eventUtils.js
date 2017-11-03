@@ -10,7 +10,7 @@ const [START_EVENT, MOVE_EVENT, END_EVENT, CANCEL_EVENT] = isMobile
 const defaultOpts = {}
 
 class Touch {
-  constructor (el, opts) {
+  constructor(el, opts) {
     this.opts = Object.assign({}, defaultOpts, opts)
     this.isMobile = isMobile
 
@@ -22,7 +22,7 @@ class Touch {
     on(el, [START_EVENT, END_EVENT, CANCEL_EVENT], this)
   }
 
-  _start (e) {
+  _start(e) {
     // 用于判断是否需要触发点击事件
     this.isCancel = false
     this.startTime = Number(new Date())
@@ -36,7 +36,7 @@ class Touch {
     on(this.el, [MOVE_EVENT], this)
   }
 
-  _move (e) {
+  _move(e) {
     let point = isMobile ? e.changedTouches[0] : e
     this.currX = point.pageX
     this.currY = point.pageY
@@ -44,7 +44,7 @@ class Touch {
     this.dealCommon(e, 'move')
   }
 
-  _end (e) {
+  _end(e) {
     this.endTime = Number(new Date())
 
     let point = isMobile ? e.changedTouches[0] : e
@@ -56,7 +56,7 @@ class Touch {
     off(this.el, [MOVE_EVENT], this)
   }
 
-  _cancel (e) {
+  _cancel(e) {
     this.endTime = Number(new Date())
     this.isCancel = true
 
@@ -65,7 +65,7 @@ class Touch {
     off(this.el, [MOVE_EVENT], this)
   }
 
-  dealCommon (e, type) {
+  dealCommon(e, type) {
     let {isStop, isPrevent} = this.opts
     isStop && e.stopPropagation()
     isPrevent && e.preventDefault()
@@ -74,7 +74,7 @@ class Touch {
     fn && fn.call(this, e)
   }
 
-  handleEvent (e) {
+  handleEvent(e) {
     switch (e.type) {
       case 'touchstart':
       case 'mousedown':
@@ -94,22 +94,22 @@ class Touch {
     }
   }
 
-  destroy () {
+  destroy() {
     off(this.el, [START_EVENT, MOVE_EVENT, END_EVENT, CANCEL_EVENT], this)
 
     Object.keys(this).forEach(prop => delete this[prop])
   }
 }
 
-function on (el, types, obj) {
+function on(el, types, obj) {
   types.forEach(type => type && el.addEventListener(type, obj))
 }
 
-function off (el, types, obj) {
+function off(el, types, obj) {
   types.forEach(type => type && el.removeEventListener(type, obj))
 }
 
-function isSupportsPassive () {
+function isSupportsPassive() {
   let supportsPassive = false
 
   try {
@@ -126,7 +126,7 @@ function isSupportsPassive () {
   return supportsPassive
 }
 
-function fireEvent (e, isPreBind, fn, rootEl) {
+function fireEvent(e, isPreBind, fn, rootEl) {
   let targrt = e.target
   let childClass, childEl
 
@@ -140,7 +140,8 @@ function fireEvent (e, isPreBind, fn, rootEl) {
 
     let classList = targrt.classList
     if (classList && classList.contains(childClass)) {
-      fn && fn(targrt, e)
+      e.currElement = targrt
+      fn && fn(e)
     }
   } else {
     fn && fn(e)
