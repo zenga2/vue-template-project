@@ -14,7 +14,28 @@ body *
   top: 0
   right: 0
   bottom: 0
-  background: inherit
+
+.full-screen-a
+  position: absolute
+  left: 0
+  top: 0
+  right: 0
+  bottom: 0
+
+.all-center
+  all-center()
+
+.vertical-center
+  vertical-center()
+
+.horizontal-center
+  horizontal-center()
+
+.scroll
+  scroll()
+
+.scroll-z
+  scroll(1)
 
 .clearfix
   display: inline-block
@@ -42,23 +63,6 @@ scaleBottomBorder(border-1px-x, scaleX)
   top: 35%
   right: 0
   text-align: center
-
-.scroll
-  overflow: auto
-  -webkit-overflow-scrolling: touch
-
-for name in 'red' 'yellow' 'purple'
-  .{name}
-    background: unquote(name)
-
-.green
-  background: #50E3C2
-
-.dark
-  background: #a9a9a9
-
-.split
-  margin-bottom: 15px
 
 .show-ellipsis
   overflow: hidden;
