@@ -149,17 +149,20 @@
           let year = this.yearList[this.yearIndex].value
           let month = this.monthList[this.monthIndex].value
           let day = this.dayList[this.dayIndex].value
+          let currDate = new Date()
 
           if (newObj.year !== year) {
             this.yearIndex = this.findIndex(this.yearList, newObj.year)
           }
 
           if (newObj.month !== month) {
-            this.monthIndex = Number(newObj.month) - 1
+            let monthIndex = Number(newObj.month) - 1
+            this.monthIndex = isNaN(monthIndex) ? currDate.getMonth() : monthIndex
           }
 
           if (newObj.day !== day) {
-            this.dayIndex = Number(newObj.day) - 1
+            let dayIndex = Number(newObj.day) - 1
+            this.dayIndex = isNaN(dayIndex) ? currDate.getDate() - 1 : dayIndex
           }
         },
         deep: true
