@@ -18,41 +18,11 @@
 
   export default {
     props: {
-      value: {type: Number, default: 0}
+      value: {type: Number, default: 0},
+      dataList: {type: Array, default() { return [] }}
     },
     data() {
       return {
-        bScroll: undefined,
-        dataList: [
-          {label: 1, value: 1},
-          {label: 2, value: 2},
-          {label: 3, value: 3},
-          {label: 4, value: 4},
-          {label: 5, value: 5},
-          {label: 6, value: 6},
-          {label: 7, value: 7},
-          {label: 8, value: 8},
-          {label: 9, value: 9},
-          {label: 10, value: 10},
-          {label: 11, value: 11},
-          {label: 12, value: 12},
-          {label: 13, value: 13},
-          {label: 14, value: 14},
-          {label: 15, value: 15},
-          {label: 16, value: 16},
-          {label: 17, value: 18},
-          {label: 19, value: 19},
-          {label: 20, value: 20},
-          {label: 21, value: 21},
-          {label: 22, value: 22},
-          {label: 23, value: 23},
-          {label: 24, value: 24},
-          {label: 25, value: 25},
-          {label: 26, value: 26},
-          {label: 27, value: 27},
-          {label: 28, value: 28},
-          {label: 29, value: 29}
-        ],
         currIndex: 0
       }
     },
@@ -65,6 +35,7 @@
         if (this.currIndex !== currIndex) {
           this.currIndex = currIndex
           this.$emit('input', currIndex)
+          this.$emit('change', currIndex)
         }
       },
 
@@ -73,6 +44,19 @@
 
         bScroll._transitionTime(time)
         bScroll._translate(x, y)
+      },
+
+      calculateItemIndex(y) {
+        let bScroll = this.bScroll
+        let itemIndex = Math.abs(y) / itemHeight + 0.6 * bScroll.movingDirectionY
+
+        if (bScroll.movingDirectionY > 0) {
+          itemIndex = Math.floor(itemIndex)
+        } else {
+          itemIndex = Math.ceil(itemIndex)
+        }
+
+        return itemIndex
       },
 
       initEvent() {
@@ -86,18 +70,11 @@
         })
 
         bScroll.on('scrollEnd', ({y}) => {
-          console.log('scrollEnd')
-          let itemNum = Math.abs(y) / itemHeight + 0.6 * bScroll.movingDirectionY
+          let itemIndex = this.calculateItemIndex(y)
 
-          if (bScroll.movingDirectionY > 0) {
-            itemNum = Math.floor(itemNum)
-          } else {
-            itemNum = Math.ceil(itemNum)
-          }
+          this.scrollTo(0, -itemIndex * itemHeight)
 
-          this.scrollTo(0, -itemNum * itemHeight)
-
-          this.setItemIndex(itemNum + 1)
+          this.setItemIndex(itemIndex)
         })
       }
     },
@@ -109,6 +86,18 @@
         })
 
         this.initEvent()
+      })
+    },
+    updated () {
+      this.$nextTick(function () {
+        console.log('updated')
+        if (this.bScroll) {
+          this.bScroll.refresh()
+
+          // 刷新后，重新计算当前选中项的index
+          let itemIndex = Math.round(Math.abs(this.bScroll.y) / itemHeight)
+          this.setItemIndex(itemIndex)
+        }
       })
     },
     beforeDestroy() {

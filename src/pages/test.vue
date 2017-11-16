@@ -1,21 +1,25 @@
 <template>
   <div class="test">
-    <picker></picker>
+    <date-picker v-model="currDate"></date-picker>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import picker from '../components/picker/picker.vue'
+  import datePicker from '../components/date-picker/date-picker.vue'
 
   export default {
     name: 'n_test',
     data() {
-      return {}
+      return {
+        currDate: {
+          year: '1992'
+        }
+      }
     },
     methods: {},
     created() {},
     mounted() {},
-    components: {picker}
+    components: {datePicker}
   }
 </script>
 
