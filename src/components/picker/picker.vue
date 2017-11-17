@@ -159,8 +159,6 @@
       top: paddingTop
       width: 100%
       height: itemHeight
-      /*border-top: 1px solid #ccc*/
-      /*border-bottom: 1px solid #ccc*/
       background-image: linear-gradient(to bottom, indicatorColor, indicatorColor, transparent, transparent),
           linear-gradient(to top, indicatorColor, indicatorColor, transparent, transparent);
       background-position: top, bottom
