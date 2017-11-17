@@ -27,6 +27,10 @@
       }
     },
     methods: {
+      refresh() {
+        this.bScroll && this.bScroll.refresh()
+      },
+
       preventDefault(e) {
         e.preventDefault()
       },
@@ -88,7 +92,7 @@
         this.initEvent()
       })
     },
-    updated () {
+    updated() {
       this.$nextTick(function () {
         console.log('updated')
         if (this.bScroll) {

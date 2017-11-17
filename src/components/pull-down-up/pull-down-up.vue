@@ -38,7 +38,6 @@
     },
     data () {
       return {
-        bScroll: undefined,
         topIconClass: 'pull_down',
         topTipText: '下拉刷新',
         isLoading: false

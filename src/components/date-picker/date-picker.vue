@@ -1,27 +1,35 @@
 <template>
-  <div class="date-picker">
-    <div class="date-picker-header border-1px">
-      <span class="cancel">取消</span>
-      <span class="ok">确定</span>
+  <transition name="picker-slide" :duration="300">
+    <div v-show="isShow" class="date-picker-wrapper">
+      <div class="mask"></div>
+      <div class="date-picker">
+        <div class="date-picker-header border-1px">
+          <span @click="cancelFn" class="cancel">取消</span>
+          <span @click="okFn" class="ok">确定</span>
+        </div>
+        <div class="date-picker-content">
+          <picker class="year picker-item"
+                  ref="yearPicker"
+                  :dataList="yearList"
+                  @change="refreshDate"
+                  v-model="yearIndex"
+          ></picker>
+          <picker class="month picker-item"
+                  ref="monthPicker"
+                  :dataList="monthList"
+                  @change="refreshDate"
+                  v-model="monthIndex"
+          ></picker>
+          <picker class="day picker-item"
+                  ref="dayPicker"
+                  :dataList="dayList"
+                  @change="refreshDate"
+                  v-model="dayIndex"
+          ></picker>
+        </div>
+      </div>
     </div>
-    <div class="date-picker-content">
-      <picker class="year picker-item"
-              :dataList="yearList"
-              @change="refreshDate"
-              v-model="yearIndex"
-      ></picker>
-      <picker class="month picker-item"
-              :dataList="monthList"
-              @change="refreshDate"
-              v-model="monthIndex"
-      ></picker>
-      <picker class="day picker-item"
-              :dataList="dayList"
-              @change="refreshDate"
-              v-model="dayIndex"
-      ></picker>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
@@ -50,7 +58,9 @@
       value: {
         type: Object,
         default() { return {} }
-      }
+      },
+      onCancel: {type: Function},
+      onOk: {type: Function}
     },
     data() {
       return {
@@ -58,7 +68,8 @@
         monthList: undefined,
         yearIndex: undefined,
         monthIndex: undefined,
-        dayIndex: undefined
+        dayIndex: undefined,
+        isShow: true
       }
     },
     computed: {
@@ -76,6 +87,40 @@
       }
     },
     methods: {
+      cancelFn() {
+        this.hide()
+
+        this.onCancel && this.onCancel()
+      },
+
+      okFn() {
+        this.hide()
+
+        this.onOk && this.onOk()
+      },
+
+      hide() {
+        this.isShow = false
+      },
+
+      show() {
+        this.isShow = true
+      },
+
+      refreshAllPicker() {
+        setTimeout(() => {
+          let props = ['yearPicker', 'monthPicker', 'dayPicker']
+
+          props.forEach(prop => {
+            this.$refs[prop].refresh()
+          })
+        }, 500)
+      },
+
+      toggle() {
+        this.isShow = !this.isShow
+      },
+
       createItemArr(start, end, isPadZero = true) {
         start = Number(start)
         end = Number(end)
@@ -166,6 +211,12 @@
           }
         },
         deep: true
+      },
+
+      isShow(newValue) {
+        if (newValue === true) {
+          this.refreshAllPicker()
+        }
       }
     },
     components: {picker}
@@ -175,7 +226,28 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixin.styl"
 
+  .date-picker-wrapper
+    z-index: 10000
+    position: fixed
+    left: 0
+    top: 0
+    width: 100%
+    height: 100%
+
+  .mask
+    position: absolute
+    left: 0
+    top: 0
+    width: 100%
+    height: 100%
+    background: rgba(0, 0, 0, 0.35)
+
   .date-picker
+    z-index: 1
+    position: absolute
+    left: 0
+    bottom: 0
+    width: 100%
     .date-picker-header
       overflow: hidden
       border-1px(#d3d3d3)
@@ -193,4 +265,15 @@
         display: inline-block
         width: 33.33333333333%
         font-size: 14px
+
+  .picker-slide-enter-active, .picker-slide-leave-active
+    .mask, .date-picker
+      transform: translateZ(0)
+      transition: 300ms
+
+  .picker-slide-enter, .picker-slide-leave-to
+    .mask
+      opacity: 0
+    .date-picker
+      transform: translateY(100%)
 </style>
