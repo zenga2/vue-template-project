@@ -36,7 +36,7 @@
   import picker from '../picker/picker.vue'
   import { padLeft } from '../../common/utils/stringUtils'
   import { isLeapYear } from '../../common/utils/dateUtils'
-  import { runDelay } from '../../common/utils/utils'
+  import { debounce } from '../../common/utils/utils'
 
   function getCurrYear() {
     return new Date().getFullYear()
@@ -174,7 +174,7 @@
           : day - 1
       },
 
-      refreshDate: runDelay(function () {
+      refreshDate: debounce(function () {
         let selectedDate = {
           year: this.yearList[this.yearIndex].value,
           month: this.monthList[this.monthIndex].value,

@@ -1,6 +1,6 @@
 import { isArray } from './typeUtils'
 
-function each (obj, fn) {
+function each(obj, fn) {
   if (!obj || !fn) return
 
   if (isArray(obj)) {
@@ -17,7 +17,7 @@ function each (obj, fn) {
 }
 
 // 扩展对象
-function extend (target, source, isOverwrite) {
+function extend(target, source, isOverwrite) {
   isOverwrite = isOverwrite || true
   let keys = Object.keys(source)
   let len = keys.length
@@ -41,7 +41,7 @@ function extend (target, source, isOverwrite) {
 
 // 让fn2在fn1执行完后执行,
 // 同时确保fn2的等待时间至少为minInterval
-function executeAfter (fn1, fn2, minInterval = 0) {
+function executeAfter(fn1, fn2, minInterval = 0) {
   let isDone = false
   let isTimeout = false
 
@@ -63,9 +63,9 @@ function executeAfter (fn1, fn2, minInterval = 0) {
   })
 }
 
-function animation (workFn, duration) {
+function animation(workFn, duration) {
   let startTime = +(new Date())
-  requestAnimationFrame(function step () {
+  requestAnimationFrame(function step() {
     let currTime = +(new Date())
     let ratio = (currTime - startTime) / duration
     workFn(ratio)
@@ -77,7 +77,7 @@ function animation (workFn, duration) {
 
 // 设置函数两次运行之间的间隔
 // 例如500ms内函数只能运行一次
-function throttle (fn, interval) {
+function throttle(fn, interval) {
   let lastTime = +new Date()
 
   return function () {
@@ -89,18 +89,18 @@ function throttle (fn, interval) {
   }
 }
 
-function runDelay (fn, interval) {
+function debounce(fn, wait = 0) {
   let timeoutId
 
   return function () {
     // clear last timeout
     window.clearTimeout(timeoutId)
     // reset timeout
-    timeoutId = setTimeout(fn.bind(this, ...arguments), interval)
+    timeoutId = setTimeout(fn.bind(this, ...arguments), wait)
   }
 }
 
-function findOverflow () {
+function findOverflow() {
   setTimeout(function () {
     traverseDom(document.body, function (node) {
       let parentNode = node.parentNode
@@ -119,7 +119,7 @@ function findOverflow () {
     })
   }, 2000)
 
-  function traverseDom (node, func) {
+  function traverseDom(node, func) {
     func(node)
     node = node.firstChild
     while (node) {
@@ -130,13 +130,13 @@ function findOverflow () {
 }
 
 class CustomError extends Error {
-  constructor (name, message) {
+  constructor(name, message) {
     super()
     Object.assign(this, {name, message})
   }
 }
 
-function downloadFile (url, filename) {
+function downloadFile(url, filename) {
   let el = document.createElement('a')
   el.href = url
   if (filename) {
@@ -145,7 +145,7 @@ function downloadFile (url, filename) {
   el.click()
 }
 
-function findAncestor (target, classStr, rootEl = document.documentElement) {
+function findAncestor(target, classStr, rootEl = document.documentElement) {
   let ancestorEl = target.parentNode
 
   while (ancestorEl !== rootEl) {
@@ -162,13 +162,13 @@ function findAncestor (target, classStr, rootEl = document.documentElement) {
 
 // target:   当前元素
 // classStr: 祖先元素的类名
-function hasAncestor (target, classStr) {
+function hasAncestor(target, classStr) {
   return !!findAncestor(target, classStr)
 }
 
 // target:    点击事件发生的元素
 // itemClass: handle绑定的元素
-function filterTarget (target, itemClass, fn) {
+function filterTarget(target, itemClass, fn) {
   let el = findAncestor(target, itemClass)
 
   if (el) {
@@ -181,11 +181,11 @@ function filterTarget (target, itemClass, fn) {
   }
 }
 
-function includes (arr, item) {
+function includes(arr, item) {
   return arr.indexOf(item) > -1
 }
 
-function switchPage (name, opts, thisArg) {
+function switchPage(name, opts, thisArg) {
   let isExecute = false
   let defaultFn = opts.default
   delete opts.default
@@ -212,7 +212,7 @@ function switchPage (name, opts, thisArg) {
 }
 
 // 深度复制
-function deepClone (obj) {
+function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
@@ -222,7 +222,7 @@ export {
   executeAfter,
   animation,
   throttle,
-  runDelay,
+  debounce,
   findOverflow,
   CustomError,
   downloadFile,

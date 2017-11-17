@@ -37,7 +37,7 @@
 <script type="text/ecmascript-6">
   import cell from '../cell/cell.vue'
   import selectbox from '../selectbox/selectbox.vue'
-  import { runDelay } from '../../common/utils/utils'
+  import { debounce } from '../../common/utils/utils'
 
   // provinceData: label value
   // cityData: provinceId label value
@@ -108,7 +108,7 @@
       },
 
       // 当多次触发时，只调用一次
-      changeAddress: runDelay(function () {
+      changeAddress: debounce(function () {
         // 延时确保数据已更新
         this.$nextTick(() => {
           let data = {}

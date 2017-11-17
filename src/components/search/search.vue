@@ -7,7 +7,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import { runDelay } from '../../common/utils/utils'
+    import { debounce } from '../../common/utils/utils'
 
     export default {
         props: {
@@ -30,7 +30,7 @@
             }
         },
         watch: {
-            searchStr: runDelay(function (newValue) {
+            searchStr: debounce(function (newValue) {
                 this.search && this.search(newValue)
             }, 300)
         }
