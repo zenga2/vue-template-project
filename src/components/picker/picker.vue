@@ -94,7 +94,6 @@
     },
     updated() {
       this.$nextTick(function () {
-        console.log('updated')
         if (this.bScroll) {
           this.bScroll.refresh()
 
