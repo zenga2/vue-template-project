@@ -4,8 +4,8 @@
       <div class="mask"></div>
       <div class="date-picker">
         <div class="date-picker-header border-1px">
-          <span @click="cancelFn" class="cancel">取消</span>
-          <span @click="okFn" class="ok">确定</span>
+          <span @click.stop="cancelFn" class="cancel">取消</span>
+          <span @click.stop="okFn" class="ok">确定</span>
         </div>
         <div class="date-picker-content">
           <picker class="year picker-item"
@@ -69,7 +69,7 @@
         yearIndex: undefined,
         monthIndex: undefined,
         dayIndex: undefined,
-        isShow: true
+        isShow: false
       }
     },
     computed: {
@@ -107,6 +107,10 @@
         this.isShow = true
       },
 
+      toggle() {
+        this.isShow = !this.isShow
+      },
+
       refreshAllPicker() {
         setTimeout(() => {
           let props = ['yearPicker', 'monthPicker', 'dayPicker']
@@ -115,10 +119,6 @@
             this.$refs[prop].refresh()
           })
         }, 500)
-      },
-
-      toggle() {
-        this.isShow = !this.isShow
       },
 
       createItemArr(start, end, isPadZero = true) {
@@ -266,6 +266,9 @@
         width: 33.33333333333%
         font-size: 14px
 
+  .date-picker
+    transform-origin: bottom center
+
   .picker-slide-enter-active, .picker-slide-leave-active
     .mask, .date-picker
       transform: translateZ(0)
@@ -275,5 +278,9 @@
     .mask
       opacity: 0
     .date-picker
-      transform: translateY(100%)
+      transform: scaleY(0)
+
+  .picker-slide-enter-to, .picker-slide-leave
+    .date-picker
+      transform: scaleY(1)
 </style>
