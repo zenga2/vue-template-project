@@ -66,8 +66,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-  @import "../../common/stylus/mixin.styl"
-
   .keyboard
     z-index: 10000
     position: fixed

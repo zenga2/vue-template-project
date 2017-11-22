@@ -12,7 +12,6 @@ import vueCookie from 'vue-cookie'
 import directive from './directives'
 import ldUtils from './common/utils/ldUtils'
 import ldService from './plugins/ld-service'
-import globalConfig from './global.config'
 
 Vue.use(vueCookie)
 Vue.use(directive)
@@ -21,7 +20,6 @@ Vue.use(ldService)
 
 // 用作事件bus
 Vue.prototype.$ldBus = new Vue()
-Vue.prototype.$ldGobalConfig = globalConfig
 
 Vue.config.productionTip = false
 
