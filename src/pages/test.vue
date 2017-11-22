@@ -1,25 +1,28 @@
 <template>
   <div class="test">
-    <ld-switch :value="value"></ld-switch>
+    <p>{{inputStr}}</p>
+    <keyboard v-model="inputStr" ref="keyboard"></keyboard>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import ldSwitch from '../components/switch/switch.vue'
+  import keyboard from '../components/keyboard/keyboard.vue'
 
   export default {
     name: 'n_test',
     data() {
       return {
-        value: false
+        inputStr: ''
       }
     },
     methods: {},
     created() {
       window.vm = this
     },
-    mounted() {},
-    components: {ldSwitch}
+    mounted() {
+      window.kkk = this.$refs.keyboard
+    },
+    components: {keyboard}
   }
 </script>
 

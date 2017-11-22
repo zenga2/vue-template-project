@@ -1,7 +1,7 @@
 <template>
   <transition name="picker-slide" :duration="300">
     <div v-show="isShow" class="date-picker-wrapper">
-      <div class="mask"></div>
+      <div @click.stop="hide" class="mask"></div>
       <div class="date-picker">
         <div class="date-picker-header border-1px">
           <span @click.stop="cancelFn" class="cancel">取消</span>
