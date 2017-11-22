@@ -1,13 +1,11 @@
 <template>
   <div class="test">
-    <p>{{inputStr}}</p>
-    <keyboard v-model="inputStr" ref="keyboard"></keyboard>
+    <p>{{'15671628325' | formateMobile}}</p>
+    <p>{{1.345324 | formateMoney}}</p>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import keyboard from '../components/keyboard/keyboard.vue'
-
   export default {
     name: 'n_test',
     data() {
@@ -19,10 +17,8 @@
     created() {
       window.vm = this
     },
-    mounted() {
-      window.kkk = this.$refs.keyboard
-    },
-    components: {keyboard}
+    mounted() {},
+    components: {}
   }
 </script>
 

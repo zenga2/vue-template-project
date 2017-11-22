@@ -10,11 +10,13 @@ import App from './App.vue'
 import router from './router'
 import vueCookie from 'vue-cookie'
 import directive from './directives'
+import filters from './filters'
 import ldUtils from './common/utils/ldUtils'
 import ldService from './plugins/ld-service'
 
 Vue.use(vueCookie)
 Vue.use(directive)
+Vue.use(filters)
 Vue.use(ldUtils)
 Vue.use(ldService)
 
