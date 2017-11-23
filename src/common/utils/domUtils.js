@@ -104,7 +104,7 @@ function getClientPosLV(el) {
   let e
 
   // 循环以累加偏移量
-  for (e = el; !!e; e = e.offsetParent) {
+  for (e = el; e; e = e.offsetParent) {
     left += el.offsetLeft
     top += el.offsetTop
   }
