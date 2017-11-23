@@ -1,7 +1,7 @@
 <template>
   <div class="test">
     <p>{{'15671628325' | formateMobile}}</p>
-    <p>{{1.345324 | formateMoney}}</p>
+    <p>{{123425436737.345324 | formateMoney}}</p>
   </div>
 </template>
 

@@ -2,8 +2,7 @@ export default function (value, num = 2) {
   let myValue = Number(value)
   if (isNaN(myValue)) return value
 
-  myValue = myValue.toFixed(num)
-  let arr = myValue.split('.')
+  let arr = myValue.toFixed(num).split('.')
   let integer = arr[0]
   let charArr = []
   let result
@@ -12,7 +11,7 @@ export default function (value, num = 2) {
   for (let i = 0, len = integer.length; i < len; i++) {
     charArr.push(integer[i])
 
-    let c = len - i - 1
+    let c = len - 1 - i
     if (c > 0 && c % 3 === 0) {
       charArr.push(', ')
     }
