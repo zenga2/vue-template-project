@@ -1,11 +1,12 @@
 <template>
-  <div class="test">
-    <p>{{'15671628325' | formateMobile}}</p>
-    <p>{{123425436737.345324 | formateMoney}}</p>
+  <div class="full-screen">
+    <swipe-search class="test"></swipe-search>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import swipeSearch from '../components/swipe-search/swipe-search.vue'
+
   export default {
     name: 'n_test',
     data() {
@@ -18,7 +19,7 @@
       window.vm = this
     },
     mounted() {},
-    components: {}
+    components: {swipeSearch}
   }
 </script>
 

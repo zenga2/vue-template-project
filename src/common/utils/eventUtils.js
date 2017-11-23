@@ -28,8 +28,8 @@ class Touch {
     this.startTime = Number(new Date())
 
     let point = isMobile ? e.changedTouches[0] : e
-    this.startX = point.pageX
-    this.startY = point.pageY
+    this.currX = this.startX = point.pageX
+    this.currY = this.startY = point.pageY
 
     this.dealCommon(e, 'start')
 
