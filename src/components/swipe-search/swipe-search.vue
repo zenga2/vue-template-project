@@ -37,9 +37,9 @@
 
         // 当前滑到的字母
         currLetter: '',
-        // 上次滑到的字母
-        lastLetter: '',
+        // 当前滑到的字母的index
         currIndex: -1,
+        // 上次滑到的字母的index
         lastIndex: -1,
         // 字母表是否处于按住状态
         isTouching: false,
@@ -66,7 +66,7 @@
         // 第一个元素(数据区)的相对于包含块的垂直偏移量
         this.firstElTop = dataWrapper.children[0].children[0].offsetTop
 
-        this.lastLetter = this.currLetter = ''
+        this.currLetter = ''
         this.lastIndex = this.currIndex = -1
         // 计算当前touch到的字母
         this.getCurrentLetter()
@@ -84,8 +84,8 @@
         this.getCurrentLetter()
 
         // 只在字母改变时滚动
-        if (this.lastLetter !== this.currLetter) {
-          // 将字母对应的列表滚动到屏幕最顶端
+        if (this.lastIndex !== this.currIndex) {
+          // 将当前字母对应的列表区域滚动到屏幕最顶端
           this.scrollToEl()
         }
       },
@@ -100,7 +100,6 @@
       // 获取当前手指滑到的字母
       getCurrentLetter() {
         this.lastIndex = this.currIndex
-        this.lastLetter = this.currLetter
 
         let touch = this.myTouch
         var dis = touch.currY - this.firstLetterTop
@@ -114,7 +113,7 @@
         this.currLetter = this.letterList[this.currIndex]
       },
 
-      // 将数据列表中与当前字母对应的锚元素，滚动到屏幕最顶端(尽最大可能)
+      // 将当前字母对应的列表区域滚动到屏幕最顶端(尽最大可能)
       scrollToEl() {
         let dataWrapper = this.$refs.dataWrapper
         let anchorEl = dataWrapper.querySelector(`.p-item[index='${this.currIndex}']`)
