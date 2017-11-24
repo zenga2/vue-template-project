@@ -139,10 +139,12 @@
       },
 
       findIndex(dataList, currValue) {
+        currValue = String(currValue)
+
         for (let i = 0, len = dataList.length; i < len; i++) {
           let item = dataList[i]
 
-          if (String(item.value) === String(currValue)) return i
+          if (String(item.value) === currValue) return i
         }
 
         return 0
