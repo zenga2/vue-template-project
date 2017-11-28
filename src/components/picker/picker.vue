@@ -43,6 +43,8 @@
         }
       },
 
+      // 因为用bScroll.scrollTo, 在滑动停止时会再次触发scrollEnd事件
+      // 所以调用其私有方法来实现滑动
       scrollTo(x, y, time = 300) {
         let bScroll = this.bScroll
 

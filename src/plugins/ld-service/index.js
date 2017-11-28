@@ -100,7 +100,7 @@ function dealSuccess(response) {
 
   // 处理调接口出错的情形
   if (result === -1) {
-    Vue.ldUtils.alert(msg)
+    Vue.ldUtils.toast(msg)
     return Promise.reject()
   }
 

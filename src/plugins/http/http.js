@@ -43,7 +43,7 @@ export default class Http {
     let chain = [dispatchRequest, dealOptionsError]
 
     // request拦截器先配置先执行
-    this.interceptors.request.reverse().forEach(interceptor => {
+    this.interceptors.request.forEachAfterReverse(interceptor => {
       chain.unshift(interceptor.fulfilled, interceptor.rejected)
     })
 

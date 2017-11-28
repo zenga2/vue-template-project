@@ -61,6 +61,7 @@
         width: 30px
         height: 30px
         border-radius: 16px
+        box-shadow: 0 0 5px 1px #999
         background: #fff
         content: ''
         transition: 350ms

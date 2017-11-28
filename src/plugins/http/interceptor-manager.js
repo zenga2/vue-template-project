@@ -17,9 +17,12 @@ export default class InterceptorManager {
     }
   }
 
-  reverse() {
-    this.handlers.reverse()
-    return this
+  forEachAfterReverse(fn) {
+    this.handlers.slice().reverse().forEach(handle => {
+      if (handle !== null) {
+        fn(handle)
+      }
+    })
   }
 
   forEach(fn) {
