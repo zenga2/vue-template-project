@@ -1,16 +1,23 @@
 <template>
   <div class="full-screen">
-    <cell-swiper>hdakd</cell-swiper>
+    <flow :step="step">
+      <div class="on">已付款</div>
+      <div class="on">已发货</div>
+      <div class="on curr">待收货</div>
+      <div>完成</div>
+    </flow>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import cellSwiper from '../components/cell-swiper/cell-swiper.vue'
+  import flow from '../components/flow/flow.vue'
 
   export default {
     name: 'n_test',
     data() {
-      return {}
+      return {
+        step: 2
+      }
     },
     methods: {},
     created() {
@@ -19,10 +26,10 @@
     mounted() {
       this.$nextTick(() => {})
     },
-    components: {cellSwiper}
+    components: {flow}
   }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus">
   @import "../common/stylus/mixin.styl"
 </style>
