@@ -9,6 +9,17 @@ const [START_EVENT, MOVE_EVENT, END_EVENT, CANCEL_EVENT] = isMobile
 
 const defaultOpts = {}
 
+// 实例属性
+// isMobile
+// isCancel          (是否触发了touchcancel事件)
+// startTime         (touchstart的时间)
+// endTime           (touchend或touchcancel的时间)
+// startX  startY    (touchstart的pageX和pageY)
+// currX   currY     (当前touchmove时的pageX和pageY)
+// lastX   lastY     (上一次touchmove时的pageX和pageY)
+// deltaX    deltaY      (currX - lastX)
+// movingDirectionX  (1 表示从左向右滑，-1 表示从右向左滑，0 表示没有滑动)
+// movingDirectionY  (1 表示从上往下滑，-1 表示从下往上滑，0 表示没有滑动)
 class Touch {
   constructor(el, opts) {
     this.opts = Object.assign({}, defaultOpts, opts)
@@ -19,7 +30,7 @@ class Touch {
     }
     this.el = el
 
-    on(el, [START_EVENT, END_EVENT, CANCEL_EVENT], this)
+    this.enable()
   }
 
   _start(e) {
@@ -28,8 +39,10 @@ class Touch {
     this.startTime = Number(new Date())
 
     let point = isMobile ? e.changedTouches[0] : e
-    this.currX = this.startX = point.pageX
-    this.currY = this.startY = point.pageY
+    this.lastX = this.currX = this.startX = point.pageX
+    this.lastY = this.currY = this.startY = point.pageY
+    this.movingDirectionX = this.movingDirectionY = 0
+    this.deltaX = this.deltaY = 0
 
     this.dealCommon(e, 'start')
 
@@ -38,8 +51,14 @@ class Touch {
 
   _move(e) {
     let point = isMobile ? e.changedTouches[0] : e
+    this.lastX = this.currX
+    this.lastY = this.currY
     this.currX = point.pageX
     this.currY = point.pageY
+    this.deltaX = this.currX - this.lastX
+    this.deltaY = this.currY - this.lastY
+    this.movingDirectionX = this.getDirection(this.deltaX)
+    this.movingDirectionY = this.getDirection(this.deltaY)
 
     this.dealCommon(e, 'move')
   }
@@ -48,6 +67,8 @@ class Touch {
     this.endTime = Number(new Date())
 
     let point = isMobile ? e.changedTouches[0] : e
+    this.lastX = this.currX
+    this.lastY = this.currY
     this.currX = point.pageX
     this.currY = point.pageY
 
@@ -74,6 +95,10 @@ class Touch {
     fn && fn.call(this, e)
   }
 
+  getDirection(dis) {
+    return dis === 0 ? 0 : dis / Math.abs(dis)
+  }
+
   handleEvent(e) {
     switch (e.type) {
       case 'touchstart':
@@ -92,6 +117,14 @@ class Touch {
         this._cancel(e)
         break
     }
+  }
+
+  enable() {
+    on(this.el, [START_EVENT, END_EVENT, CANCEL_EVENT], this)
+  }
+
+  disable() {
+    off(this.el, [START_EVENT, MOVE_EVENT, END_EVENT, CANCEL_EVENT], this)
   }
 
   destroy() {
