@@ -1,37 +1,25 @@
 <template>
   <div class="full-screen">
-    <swiper>
-      <img :width="width" src="../common/images/one.png"/>
-      <img :width="width" src="../common/images/two.png"/>
-      <img :width="width" src="../common/images/three.png"/>
-      <img :width="width" src="../common/images/four.png"/>
-      <img :width="width" src="../common/images/five.png"/>
-      <img :width="width" src="../common/images/six.png"/>
-    </swiper>
+    <cell-swiper>hdakd</cell-swiper>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import swiper from '../components/swiper/swiper.vue'
+  import cellSwiper from '../components/cell-swiper/cell-swiper.vue'
 
   export default {
     name: 'n_test',
     data() {
-      return {
-        inputStr: '',
-        width: undefined
-      }
+      return {}
     },
     methods: {},
     created() {
       window.vm = this
     },
     mounted() {
-      this.$nextTick(() => {
-        this.width = document.body.clientWidth
-      })
+      this.$nextTick(() => {})
     },
-    components: {swiper}
+    components: {cellSwiper}
   }
 </script>
 
