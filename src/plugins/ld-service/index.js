@@ -95,13 +95,13 @@ function dealSuccess(response) {
   if (!checkPermissions(isLogOut, isPower)) {
     reLogin()
 
-    return Promise.reject()
+    return Promise.reject(null)
   }
 
   // 处理调接口出错的情形
   if (result === -1) {
     Vue.ldUtils.toast(msg)
-    return Promise.reject()
+    return Promise.reject(null)
   }
 
   return response.data
@@ -139,7 +139,7 @@ function dealError(error) {
 
   console.error(error)
   Vue.ldUtils.toast(tipStr)
-  return Promise.reject()
+  return Promise.reject(null)
 }
 
 const ldService = {

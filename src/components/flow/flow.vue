@@ -82,6 +82,4 @@
         &.curr
           &:before
             background: #ccc
-
-  /*df*/
 </style>
