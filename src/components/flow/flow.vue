@@ -1,5 +1,5 @@
 <template>
-  <div ref="flow" class="flow">
+  <div ref="flow" class="flow" :class="'flow-'+type">
     <slot></slot>
   </div>
 </template>
@@ -8,7 +8,8 @@
   export default {
     props: {
       // 从1开始
-      step: {type: Number, default: 0}
+      step: {type: Number, default: 0},
+      type: {type: String, default: 'vertical'}
     },
     data() {
       return {}
@@ -52,6 +53,8 @@
 
   .flow
     background: #fff
+
+  .flow-vertical
     & > div
       position: relative
       padding-left: 30px
@@ -82,4 +85,39 @@
         &.curr
           &:before
             background: #ccc
+
+  .flow-horizontal
+    display: flex
+    & > div
+      position: relative
+      padding-top: 30px
+      width: 80px
+      text-align: center
+      &:after
+        z-index: 1
+        position: absolute
+        top: 0
+        left: 50%
+        margin-left: -7px
+        width: 14px
+        height: 14px
+        border-radius: 50%
+        background: #ccc
+        content: ''
+      &:before
+        position: absolute
+        top: 5px
+        left: 0
+        width: 100%
+        height: 4px
+        background: #ccc
+        content: ''
+      &:first-child:before
+        left: 50%
+      &:last-child:before
+        width: 50%
+      &.on
+        color: blue-color-value
+        &:after, &:before
+          background: blue-color-value
 </style>

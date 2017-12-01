@@ -1,6 +1,6 @@
 <template>
   <div class="full-screen">
-    <flow :step="step">
+    <flow :step="step" type="horizontal">
       <div class="on">已付款</div>
       <div class="on">已发货</div>
       <div class="on curr">待收货</div>
