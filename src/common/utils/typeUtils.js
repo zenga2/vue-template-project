@@ -1,8 +1,8 @@
-function getType (obj) {
+function getType(obj) {
   return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
 }
 
-function helper (type) {
+function helper(type) {
   return function (obj) {
     return getType(obj) === type
   }
@@ -13,64 +13,64 @@ let [isRegExp, isPlainObject, isDate] = ['regexp', 'object', 'date'].map(functio
   return helper(type)
 })
 
-function isBoolean (arg) {
+function isBoolean(arg) {
   return typeof arg === 'boolean'
 }
 
-function isNull (arg) {
+function isNull(arg) {
   return arg === null
 }
 
-function isNullOrUndefined (arg) {
+function isNullOrUndefined(arg) {
   return arg === null || arg === undefined
 }
 
-function isNumber (arg) {
+function isNumber(arg) {
   return typeof arg === 'number'
 }
 
-function isString (arg) {
+function isString(arg) {
   return typeof arg === 'string'
 }
 
-function isSymbol (arg) {
+function isSymbol(arg) {
   return typeof arg === 'symbol'
 }
 
-function isUndefined (arg) {
+function isUndefined(arg) {
   return arg === undefined
 }
 
-function isObject (arg) {
+function isObject(arg) {
   return arg !== null && typeof arg === 'object'
 }
 
-function isFunction (arg) {
+function isFunction(arg) {
   return typeof arg === 'function'
 }
 
-function isPrimitive (arg) {
+function isPrimitive(arg) {
   return arg === null ||
-    typeof arg !== 'object' && typeof arg !== 'function'
+      typeof arg !== 'object' && typeof arg !== 'function'
 }
 
 // 仅仅判断自有属性,同时如果参数不是Plain Object
-function isEmptyObj (obj) {
+function isEmptyObj(obj) {
   if (!isPlainObject(obj)) throw Error('Invalid argument: function isEmptyObj need a Plain Object')
 
   return Object.keys(obj).length === 0
 }
 
-function isFormData (val) {
+function isFormData(val) {
   return (typeof FormData !== 'undefined') && (val instanceof FormData)
 }
 
-function isArrayBuffer (val) {
-  return toString.call(val) === '[object ArrayBuffer]'
+function isArrayBuffer(val) {
+  return getType(val) === 'arraybuffer'
 }
 
-function isArrayBufferView (val) {
-  var result
+function isArrayBufferView(val) {
+  let result
   if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
     result = ArrayBuffer.isView(val)
   } else {
@@ -79,12 +79,12 @@ function isArrayBufferView (val) {
   return result
 }
 
-function isFile (val) {
-  return toString.call(val) === '[object File]'
+function isFile(val) {
+  return getType(val) === 'file'
 }
 
-function isBlob (val) {
-  return toString.call(val) === '[object Blob]'
+function isBlob(val) {
+  return getType(val) === 'blob'
 }
 
 export {

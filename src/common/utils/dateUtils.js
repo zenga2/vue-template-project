@@ -1,4 +1,4 @@
-import { padLeft } from './stringUtils'
+import {padLeft} from './stringUtils'
 
 // fmt eg: 'yyyy-MM-dd hh:mm:ss'
 function formate(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
@@ -136,4 +136,7 @@ function isLeapYear(year) {
   return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
 }
 
-export { formate, modifyDate, parse, calculateDuration, msToStr, isLeapYear }
+export {
+  formate, modifyDate, parse,
+  calculateDuration, msToStr, isLeapYear
+}
