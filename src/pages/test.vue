@@ -1,5 +1,9 @@
 <template>
   <div class="full-screen">
+    <div><span></span><span></span><span></span></div>
+    <div><span></span><span></span><span></span></div>
+    <div><span></span><span></span><span></span></div>
+    <div><span></span><span></span><span></span></div>
   </div>
 </template>
 
@@ -15,16 +19,7 @@
       step: 'requred'
     },
     methods: {},
-    beforeCreate() {
-      let validatorMap = this.$options.validators
-      let keys = Object.keys(validatorMap)
-
-      if (keys.length === 0) return
-
-      for ([index, key] of keys) {
-        let validator = validatorMap[key]
-      }
-    },
+    beforeCreate() {},
     created() {
       window.vm = this
     },

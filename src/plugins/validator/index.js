@@ -1,5 +1,5 @@
 import {each} from '../../common/utils/utils'
-import {getType} from '../../common/utils/typeUtils'
+import {getType, isNull, isUndefined} from '../../common/utils/typeUtils'
 import {escapeStringRegexp} from '../../common/utils/stringUtils'
 
 // Validate string
@@ -10,13 +10,17 @@ export default function (data, opts) {
 
   if (typeof data === 'object') {
     each(opts, (rule, prop) => {
-      validateResult[prop] = validator(rule, String(data[prop]))
+      validateResult[prop] = validator(rule, toString(data[prop]))
     })
   } else {
-    validateResult = validator(opts, String(data))
+    validateResult = validator(opts, toString(data))
   }
 
   return validateResult
+}
+
+function toString(value) {
+  return isNull(value) || isUndefined(value) ? '' : String(value)
 }
 
 function validator(rule, value) {
