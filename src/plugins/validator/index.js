@@ -4,26 +4,30 @@ import {escapeStringRegexp} from '../../common/utils/stringUtils'
 
 // Validate string
 // required  number  float integer  date|yyyy-MM-dd hh:mm:ss
-// mobile    email   max   min idCard
+// mobile    email   max   min maxLength minLength  idCard
 export default function (data, opts) {
   let validateResult = {}
 
-  each(opts, (validator, prop) => {
-    let value = String(data[prop])
-
-    switch (getType(validator)) {
-      case 'string':
-      case 'regexp':
-      case 'function':
-        validateResult[prop] = runValidator(validator, value)
-        break
-      case 'array':
-        validateResult[prop] = runValidatorByArr(validator, value)
-        break
-    }
-  })
+  if (typeof data === 'object') {
+    each(opts, (rule, prop) => {
+      validateResult[prop] = validator(rule, String(data[prop]))
+    })
+  } else {
+    validateResult = validator(opts, String(data))
+  }
 
   return validateResult
+}
+
+function validator(rule, value) {
+  switch (getType(rule)) {
+    case 'string':
+    case 'regexp':
+    case 'function':
+      return validateRule(rule, value)
+    case 'array':
+      return validateRuleList(rule, value)
+  }
 }
 
 const numberRegExp = /^-?\d+(\.\d+)?$/
@@ -33,17 +37,25 @@ const mobileRegExp = /^1(3[0-9]|4[579]|5[0-35-9]|7[0135678]|8[0-9])\d{8}$/
 const emailRegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 const idCardRegExp = /^[1-9][0-7]\d{4}((19\d{2}(0[13-9]|1[012])(0[1-9]|[12]\d|30))|(19\d{2}(0[13578]|1[02])31)|(19\d{2}02(0[1-9]|1\d|2[0-8]))|(19([13579][26]|[2468][048]|0[48])0229))\d{3}(\d|X|x)?$/
 
-const rules = {
+const ruleList = {
   required(value) {
-    return value.length > 0
+    return !!value
   },
 
-  max(value, len) {
-    return value.length <= len
+  max(value, maxNum) {
+    return Number(value) <= Number(maxNum)
   },
 
-  min(value, len) {
-    return value.length >= len
+  min(value, minNum) {
+    return Number(value) >= Number(minNum)
+  },
+
+  maxLength(val, len) {
+    return val.length <= Number(len)
+  },
+
+  minLength(val, len) {
+    return val.length >= Number(len)
   },
 
   number(value) {
@@ -89,13 +101,13 @@ const rules = {
   }
 }
 
-function runValidatorByArr(validator, value) {
-  // the index of validator that validate failure
+function validateRuleList(rules, value) {
+  // the index of rule that validate failure
   let step = -1
   let result
 
-  for (let [index, vd] of validator.entries()) {
-    result = runValidator(vd, value)
+  for (let [index, rule] of rules.entries()) {
+    result = validateRule(rule, value)
 
     if (!result) {
       step = index
@@ -106,26 +118,26 @@ function runValidatorByArr(validator, value) {
   return [result, step]
 }
 
-function runValidator(validator, value) {
-  switch (getType(validator)) {
+function validateRule(rule, value) {
+  switch (getType(rule)) {
     case 'string':
-      return [dealStringValidator(validator, value), -1]
+      return [dealStringRule(rule, value), -1]
     case 'regexp':
-      return [validator.test(value), -1]
+      return [rule.test(value), -1]
     case 'function':
-      return [validator(value), -1]
+      return [rule(value), -1]
   }
 }
 
 
-function dealStringValidator(validator, value) {
-  let arr = validator.split('|')
+function dealStringRule(rule, value) {
+  let arr = rule.split('|')
   let validatorKey = arr[0]
   let condition = arr[1]
 
-  validator = rules[validatorKey] ? rules[validatorKey] : validateByString
+  rule = ruleList[validatorKey] ? ruleList[validatorKey] : validateByString
 
-  return validator(value, condition)
+  return rule(value, condition)
 }
 
 function validateByString(value) {
