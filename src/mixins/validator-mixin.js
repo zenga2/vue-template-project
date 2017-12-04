@@ -1,35 +1,23 @@
 import validator from '../plugins/validator'
 import {getType} from '../common/utils/typeUtils'
+import {injectProp} from '../common/utils/vueUtils'
 
 export default {
   beforeCreate() {
+    let validators = this.$options.validators
+    let injectObj = {}
+
+    // init injectObj
+    Object.keys(validators)
+        .forEach(prop => injectObj[prop] = {})
+
     // inject 'validators' prop in data
-    injectProp.call(this)
+    injectProp('validators', injectObj, this)
   },
 
   created() {
     // add watch listener
     initWatchListener.call(this)
-  }
-}
-
-function injectProp() {
-  let data = this.$options.data
-  let injectObj = {}
-
-  // init injectObj
-  Object.keys(validators)
-      .forEach(prop => injectObj[prop] = undefined)
-
-  // inject 'validators' prop in data
-  if (typeof data === 'function') {
-    this.$options.data = function () {
-      let obj = data.call(this)
-      obj.validators = injectObj
-      return obj
-    }
-  } else {
-    data.validators = injectObj
   }
 }
 
@@ -49,13 +37,14 @@ function initWatchListener() {
       tip = ''
     }
 
-    // init data
-    this.validators[prop] = runValidator(this[prop], rule, tip)
-
     // add listener
-    this.$watch(prop, function (newValue) {
-      this.validators[prop] = runValidator(newValue, rule, tip)
-    })
+    this.$watch(
+        prop,
+        function (newValue) {
+          this.validators[prop] = runValidator(newValue, rule, tip)
+        },
+        {immediate: true}
+    )
   }
 }
 

@@ -8,12 +8,15 @@ import {escapeStringRegexp} from '../../common/utils/stringUtils'
 export default function (data, opts) {
   let validateResult = {}
 
+  // validate multiple values
   if (typeof data === 'object') {
     each(opts, (rule, prop) => {
-      validateResult[prop] = validator(rule, toString(data[prop]))
+      validateResult[prop] = validator(toString(data[prop]), rule)
     })
-  } else {
-    validateResult = validator(opts, toString(data))
+  }
+  // validate single values
+  else {
+    validateResult = validator(toString(data), opts)
   }
 
   return validateResult
@@ -23,22 +26,21 @@ function toString(value) {
   return isNull(value) || isUndefined(value) ? '' : String(value)
 }
 
-function validator(rule, value) {
+function validator(value, rule) {
   switch (getType(rule)) {
     case 'string':
     case 'regexp':
     case 'function':
-      return validateRule(rule, value)
+      return [validateRule(value, rule), -1]
     case 'array':
-      return validateRuleList(rule, value)
+      return validateRuleList(value, rule)
   }
 }
 
 const numberRegExp = /^-?\d+(\.\d+)?$/
-const integerRegExp = /^-?\d+$/
-const floatRegExp = /^-?\d+\.\d+$/
+const integerRegExp = /^(0|-?[1-9]\d*)$/
 const mobileRegExp = /^1(3[0-9]|4[579]|5[0-35-9]|7[0135678]|8[0-9])\d{8}$/
-const emailRegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const emailRegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 const idCardRegExp = /^[1-9][0-7]\d{4}((19\d{2}(0[13-9]|1[012])(0[1-9]|[12]\d|30))|(19\d{2}(0[13578]|1[02])31)|(19\d{2}02(0[1-9]|1\d|2[0-8]))|(19([13579][26]|[2468][048]|0[48])0229))\d{3}(\d|X|x)?$/
 
 const ruleList = {
@@ -70,18 +72,21 @@ const ruleList = {
     return integerRegExp.test(value)
   },
 
-  float(value) {
-    return floatRegExp.test(value)
-  },
-
   // fmt eg: 'yyyy-MM-dd hh:mm:ss'
-  date(value, fmt) {
+  date(value, fmt = 'yyyy-MM-dd') {
     let arr = ['y+', 'M+', 'd+', 'h+', 'm+', 's+']
+    // escape string for RegExp
     fmt = escapeStringRegexp(fmt)
 
     for (let patt of arr) {
+      // 先用w占位,避免\d与d+冲突
       fmt = fmt.replace(new RegExp(patt), (matchStr) => {
-        // 先用w占位,避免\d与d+冲突
+        // 除年以外,其他的配备符只有一位时，
+        // 表示补零和不补零，这两种格式都支持
+        if (patt !== 'y+' && matchStr.length === 1) {
+          return `\\w{1,2}`
+        }
+
         return `\\w{${matchStr.length}}`
       })
     }
@@ -105,45 +110,48 @@ const ruleList = {
   }
 }
 
-function validateRuleList(rules, value) {
+function validateRuleList(value, rules) {
   // the index of rule that validate failure
   let step = -1
   let result
 
   for (let [index, rule] of rules.entries()) {
-    result = validateRule(rule, value)
+    result = validateRule(value, rule)
 
     if (!result) {
       step = index
-      return result
+      return [result, step]
     }
   }
 
   return [result, step]
 }
 
-function validateRule(rule, value) {
+function validateRule(value, rule) {
   switch (getType(rule)) {
     case 'string':
-      return [dealStringRule(rule, value), -1]
+      return dealStringRule(value, rule)
     case 'regexp':
-      return [rule.test(value), -1]
+      return rule.test(value)
     case 'function':
-      return [rule(value), -1]
+      return rule(value)
   }
 }
 
-
-function dealStringRule(rule, value) {
+function dealStringRule(value, rule) {
   let arr = rule.split('|')
   let validatorKey = arr[0]
   let condition = arr[1]
 
-  rule = ruleList[validatorKey] ? ruleList[validatorKey] : validateByString
+  rule = ruleList[validatorKey]
+  if (!rule) {
+    rule = validateByString
+    condition = validatorKey
+  }
 
   return rule(value, condition)
 }
 
-function validateByString(value) {
-  return value.indexOf(value) > -1
+function validateByString(value, rule) {
+  return value.indexOf(rule) > -1
 }

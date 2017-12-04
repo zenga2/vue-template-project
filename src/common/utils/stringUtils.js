@@ -30,7 +30,7 @@ function camelToHyphen(str) {
 
 // 将普通字符串转义成正则的格式
 function escapeStringRegexp(str) {
-  let matchOperatorsRe = /[|\\{}()\[\]^$+*?.]/g
+  let matchOperatorsRe = /[|\\{}()[\]^$+*?.]/g
 
   if (typeof str !== 'string') {
     throw new TypeError('Expected a string')
