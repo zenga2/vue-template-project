@@ -139,9 +139,7 @@ function validateRule(value, rule) {
 }
 
 function dealStringRule(value, rule) {
-  let arr = rule.split('|')
-  let validatorKey = arr[0]
-  let condition = arr[1]
+  let [validatorKey, condition] = rule.split('|')
 
   rule = ruleList[validatorKey]
   if (!rule) {
