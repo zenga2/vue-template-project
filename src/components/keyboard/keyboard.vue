@@ -3,18 +3,18 @@
     <div v-show="isShow" class="keyboard">
       <div @click.stop="hide" class="mask"></div>
       <div @click.stop="handle" class="keyboard-content">
-        <div data-value="1" class="item">1</div>
-        <div data-value="2" class="item">2</div>
-        <div data-value="3" class="item">3</div>
-        <div data-value="4" class="item">4</div>
-        <div data-value="5" class="item">5</div>
-        <div data-value="6" class="item">6</div>
-        <div data-value="7" class="item">7</div>
-        <div data-value="8" class="item">8</div>
-        <div data-value="9" class="item">9</div>
-        <div data-value="." class="item dot">·</div>
-        <div data-value="0" class="item">0</div>
-        <div data-value="delete" class="item delete">删除</div>
+        <div data-value="1" class="item active">1</div>
+        <div data-value="2" class="item active">2</div>
+        <div data-value="3" class="item active">3</div>
+        <div data-value="4" class="item active">4</div>
+        <div data-value="5" class="item active">5</div>
+        <div data-value="6" class="item active">6</div>
+        <div data-value="7" class="item active">7</div>
+        <div data-value="8" class="item active">8</div>
+        <div data-value="9" class="item active">9</div>
+        <div data-value="." class="item dot active">·</div>
+        <div data-value="0" class="item active">0</div>
+        <div data-value="delete" class="item delete active">删除</div>
       </div>
     </div>
   </transition>
