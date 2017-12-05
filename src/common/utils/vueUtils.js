@@ -1,7 +1,7 @@
 function injectProp(dataProp, injectObj, vm) {
   let data = vm.$options.data
 
-  // inject 'validators' prop in data
+  // inject prop in data
   if (typeof data === 'function') {
     vm.$options.data = function () {
       let obj = data.call(vm)
