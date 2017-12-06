@@ -8,7 +8,7 @@
     <div v-if="!this.loadMore" class="ld-content">
       <slot></slot>
     </div>
-    <div v-if="!!this.loadMore" v-infinite="loadMore" class="ld-content">
+    <div v-else v-infinite="loadMore" class="ld-content">
       <slot></slot>
     </div>
     <div @click="onOk" v-if="needFooter" class="ld-footer">{{footerText}}</div>
