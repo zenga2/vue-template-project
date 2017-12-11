@@ -5,6 +5,7 @@ import Alert from '../../components/alert'
 import Toast from '../../components/toast'
 import Confirm from '../../components/confirm'
 import StorageUtil from './storageUtils'
+import {urlParse} from './urlUtils'
 
 const accessTokenKey = 'bg_accessToken'
 const userInfoKey = 'bg_userInfo'
@@ -14,11 +15,11 @@ const localStorageUtil = new StorageUtil('localStorage')
 
 let titleEl
 
-function isLogin () {
+function isLogin() {
   return !!getAccessToken()
 }
 
-function getAccessToken () {
+function getAccessToken() {
   let token = vueCookie.get(accessTokenKey)
   if (token === 'undefined') {
     token = undefined
@@ -26,7 +27,7 @@ function getAccessToken () {
   return token
 }
 
-function getUserInfo (callback) {
+function getUserInfo(callback) {
   let userInfo = sessionStorageUtil.getItem(userInfoKey)
 
   if (!userInfo) {
@@ -39,7 +40,7 @@ function getUserInfo (callback) {
   }
 }
 
-function getDomain () {
+function getDomain() {
   let domain = location.hostname
 
   if (/^192\.168\.10\./.test(domain)) {
@@ -59,7 +60,7 @@ function getDomain () {
   return domain
 }
 
-function saveLoginInfo (response) {
+function saveLoginInfo(response) {
   let opts = {
     expires: '1Y',
     domain: getDomain()
@@ -69,14 +70,14 @@ function saveLoginInfo (response) {
   sessionStorageUtil.setItem(userInfoKey, response.user)
 }
 
-function clearLoginInfo () {
+function clearLoginInfo() {
   let opts = {domain: getDomain()}
 
   vueCookie.delete(accessTokenKey, opts)
   sessionStorageUtil.removeItem(userInfoKey)
 }
 
-function alert (opts) {
+function alert(opts) {
   if (typeof opts === 'string') {
     opts = {content: opts}
   }
@@ -84,7 +85,7 @@ function alert (opts) {
   return new Alert(opts)
 }
 
-function confirm (opts) {
+function confirm(opts) {
   if (typeof opts === 'string') {
     opts = {content: opts}
   }
@@ -92,15 +93,15 @@ function confirm (opts) {
   return new Confirm(opts)
 }
 
-function toast (message, duration, onFinish) {
+function toast(message, duration, onFinish) {
   return new Toast(message, duration, onFinish)
 }
 
-function storageHelper (utilObj, method) {
+function storageHelper(utilObj, method) {
   return utilObj[method].bind(utilObj)
 }
 
-function modifyTitle (text) {
+function modifyTitle(text) {
   if (!titleEl) {
     titleEl = document.querySelector('head title')
   }
@@ -108,18 +109,18 @@ function modifyTitle (text) {
   titleEl.textContent = text
 }
 
-function isMobileNumber (mobileNumber) {
+function isMobileNumber(mobileNumber) {
   let pattern = /^((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)$/
 
   return pattern.test(mobileNumber)
 }
 
-function setPageParam (toPageName, param) {
+function setPageParam(toPageName, param) {
   sessionStorageUtil.setItem('page_name_' + toPageName, {value: param})
 }
 
 // 参数是一次性的,取一次就销毁
-function getPageParam (currPageName, callback) {
+function getPageParam(currPageName, callback) {
   let key = 'page_name_' + currPageName
   let param = sessionStorageUtil.getItem(key)
   let isExist = param !== null
@@ -136,8 +137,17 @@ function getPageParam (currPageName, callback) {
   }
 }
 
+// 获取从其他项目跳转过来时传递的参数
+const getProjectParam = (function () {
+  let paramObj = urlParse(window.location.search)
+
+  return function () {
+    return paramObj
+  }
+})()
+
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.ldUtils = Vue.prototype.$ldUtils = {
       isLogin,
       getAccessToken,
@@ -152,6 +162,7 @@ export default {
       isMobileNumber,
       setPageParam,
       getPageParam,
+      getProjectParam,
       setLocalItem: storageHelper(localStorageUtil, 'setItem'),
       setSessionItem: storageHelper(sessionStorageUtil, 'setItem'),
       getLocalItem: storageHelper(localStorageUtil, 'getItem'),
