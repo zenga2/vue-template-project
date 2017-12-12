@@ -1,12 +1,15 @@
 <template>
-  <div class="test full-screen">
-    <child>
-      <span slot="tip"> world</span>
-    </child>
-  </div>
+  <page class="test full-screen" :needFooter="true">
+    <page-header></page-header>
+    <page-main></page-main>
+    <page-footer></page-footer>
+  </page>
 </template>
 
 <script type="text/ecmascript-6">
+  import page from '../components/page/page'
+  import Vue from 'vue'
+
   export default {
     name: 'n_test',
     data() {
@@ -16,15 +19,14 @@
     beforeCreate() {},
     created() {
       window.vm = this
+      console.log(this.$children.length)
     },
     mounted() {
-      this.$nextTick(() => {})
+      this.$nextTick(() => {
+        console.log(this.$children.length)
+      })
     },
-    components: {
-      child: {
-        template: '<div><slot name="tip" text="child-class">default<slot></slot></slot></div>'
-      }
-    }
+    components: {page}
   }
 </script>
 

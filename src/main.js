@@ -13,12 +13,14 @@ import directive from './directives'
 import filters from './filters'
 import ldUtils from './common/utils/ldUtils'
 import ldService from './plugins/ld-service'
+import commonComponent from './components'
 
 Vue.use(vueCookie)
 Vue.use(directive)
 Vue.use(filters)
 Vue.use(ldUtils)
 Vue.use(ldService)
+Vue.use(commonComponent)
 
 // 用作事件bus
 Vue.prototype.$ldBus = new Vue()
