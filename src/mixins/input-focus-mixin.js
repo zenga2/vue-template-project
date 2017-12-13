@@ -24,6 +24,7 @@ export default {
       }
 
       this.inputElList.forEach(el => {
+        this.$set(this.inputState, prop, undefined)
         el.addEventListener('focus', this.focusHandle)
         el.addEventListener('blur', this.blurHandle)
       })

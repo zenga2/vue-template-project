@@ -1,5 +1,5 @@
 <template>
-  <div @click="clickHandle" class="cell border-1px" :class="{'single-cell': isSingle}">
+  <div class="cell border-1px" :class="{'single-cell': isSingle}">
     <span class="label">{{label}}</span>
     <span v-if="!isInputBox" class="value-text">{{value}}</span>
     <input v-if="isInputBox" class="value"
@@ -22,7 +22,6 @@
       value: {default: ''},
       isInputBox: {type: Boolean, default: false},
       isLink: {type: Boolean, default: false},
-      clickFn: {type: Function},
       isSingle: {type: Boolean, default: false},
       inputType: {type: String, default: 'text'},
       placeholder: {default: ''},
@@ -30,10 +29,6 @@
       focusProp: {type: String}
     },
     methods: {
-      clickHandle(e) {
-        this.clickFn && this.clickFn(e)
-      },
-
       inputHandle(e) {
         this.$emit('input', e.target.value)
       }
