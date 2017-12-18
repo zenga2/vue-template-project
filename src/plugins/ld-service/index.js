@@ -17,9 +17,7 @@ http.interceptors.request.use(opts => {
   let commonParam = {}
 
   if (opts.needAccessToken !== false) {
-    // commonParam.access_token = Vue.ldUtils.getAccessToken()
-    // todo 上线前修改
-    commonParam.access_token = 'tqxpBvzbi2wpBjbxtqxdsjhxt6xdnj6'
+    commonParam.access_token = Vue.ldUtils.getAccessToken()
     // 判断是否已登录
     if (!commonParam.access_token) {
       reLogin()
