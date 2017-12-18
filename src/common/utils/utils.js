@@ -216,6 +216,14 @@ function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
+function ployfill(prototype, opts) {
+  each(opts, (value, key) => {
+    if (!(key in prototype)) {
+      Object.defineProperty(Array.prototype, key, {value})
+    }
+  })
+}
+
 export {
   each,
   extend,
@@ -231,5 +239,6 @@ export {
   filterTarget,
   switchPage,
   includes,
-  deepClone
+  deepClone,
+  ployfill
 }

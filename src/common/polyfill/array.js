@@ -1,39 +1,30 @@
-if (!('includes' in Array.prototype)) {
-  Object.defineProperty(Array.prototype, 'includes', {
-    value(item) {
-      return this.indexOf(item) > -1
-    }
-  })
-}
+import { ployfill } from '../utils/utils'
 
-if (!('findIndex' in Array.prototype)) {
-  Object.defineProperty(Array.prototype, 'findIndex', {
-    value(fn) {
-      for (let i = 0, len = this.length; i < len; i++) {
-        let item = this[i]
-        if (!!fn(item, i, this) === true) {
-          return i
-        }
+
+ployfill(Array.prototype, {
+  includes(item) {
+    return this.indexOf(item) > -1
+  },
+
+  findIndex(fn) {
+    for (let i = 0, len = this.length; i < len; i++) {
+      let item = this[i]
+      if (!!fn(item, i, this) === true) {
+        return i
       }
     }
-  })
-}
+  },
 
-if (!('find' in Array.prototype)) {
-  Object.defineProperty(Array.prototype, 'find', {
-    value(fn) {
-      for (let i = 0, len = this.length; i < len; i++) {
-        let item = this[i]
-        if (!!fn(item, i, this) === true) {
-          return item
-        }
+  find(fn) {
+    for (let i = 0, len = this.length; i < len; i++) {
+      let item = this[i]
+      if (!!fn(item, i, this) === true) {
+        return item
       }
     }
-  })
-}
+  },
 
-Object.defineProperty(Array.prototype, 'remove', {
-  value(item) {
+  remove(item) {
     let index = this.indexOf(item)
 
     if (index > -1) {
