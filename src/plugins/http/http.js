@@ -59,12 +59,15 @@ export default class Http {
     return promise
   }
 
-  get(url, opts) {
+  // 数据配置在param
+  get(url, opts = {}) {
+    opts.method = 'GET'
     this.request(url, opts)
   }
 
-  post(url, data, opts) {
-    opts.body = data
+  // 数据配置在body
+  post(url, opts = {}) {
+    opts.method = 'POST'
     this.request(url, opts)
   }
 
