@@ -217,6 +217,7 @@ function deepClone(obj) {
 }
 
 function ployfill(prototype, opts) {
+  /* eslint-disable no-extend-native */
   each(opts, (value, key) => {
     if (!(key in prototype)) {
       Object.defineProperty(Array.prototype, key, {value})
