@@ -118,12 +118,9 @@ function modifyDate(date, opStr) {
   if (arr) {
     let num = Number(arr[1])
     let unitStr = arr[2]
+    let prop = propMap[unitStr]
 
     // modify date
-    op(propMap[unitStr], num)
-  }
-
-  function op(prop, num) {
     date['set' + prop](date['get' + prop]() + num)
   }
 

@@ -9,7 +9,6 @@ const router = new Router({
   routes: [
     {path: '/', name: 'login', component: Login},
     {path: '/test', name: 'test', component: Test}
-
   ]
 })
 
