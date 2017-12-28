@@ -36,7 +36,7 @@
       loadData: {type: Function},
       preventDefaultException: {type: Object}
     },
-    data () {
+    data() {
       return {
         topIconClass: 'pull_down',
         topTipText: '下拉刷新',
@@ -44,7 +44,7 @@
       }
     },
     methods: {
-      initEvent () {
+      initEvent() {
         let bScroll = this.bScroll
 
         bScroll.on('scroll', ({y}) => {
@@ -72,7 +72,7 @@
         })
       },
 
-      moveIn (y) {
+      moveIn(y) {
         let topBox = this.$refs.topBox
         let top
 
@@ -105,7 +105,7 @@
         }
       },
 
-      refreshTopBox (className, tip) {
+      refreshTopBox(className, tip) {
         if (className) {
           this.topIconClass = className
         }
@@ -115,7 +115,7 @@
         }
       },
 
-      onRefreshData () {
+      onRefreshData() {
         let refreshData = this.refreshData
 
         this.refreshTopBox('pull_load', constMap.refreshingTip)
@@ -134,7 +134,7 @@
         }
       },
 
-      afterRefreshData () {
+      afterRefreshData() {
         let bScroll = this.bScroll
 
         bScroll.refresh()
@@ -146,7 +146,7 @@
         }, 350)
       },
 
-      onLoadData () {
+      onLoadData() {
         let bScroll = this.bScroll
         let loadData = this.loadData
 
@@ -165,7 +165,7 @@
         }
       },
 
-      afterLoadData () {
+      afterLoadData() {
         let bScroll = this.bScroll
 
         bScroll.refresh()
@@ -175,18 +175,18 @@
       },
 
       // 当点击其他区域时，使input blur
-      blurInputBox () {
+      blurInputBox() {
         let inputList = this.$refs.wrapper.querySelectorAll('.-text-input-')
         Array.from(inputList).forEach(item => {
           item.blur()
         })
       },
 
-      refresh () {
+      refresh() {
         this.bScroll.refresh()
       }
     },
-    mounted () {
+    mounted() {
       let wrapper = this.$refs.wrapper
       let preventDefaultException
 
@@ -212,7 +212,7 @@
         }, 100)
       })
     },
-    beforeDestroy () {
+    beforeDestroy() {
       if (this.bScroll) {
         this.bScroll.destroy()
         delete this.bScroll

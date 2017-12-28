@@ -1,4 +1,4 @@
-import { addDataToUrl } from '../../common/utils/urlUtils'
+import {addDataToUrl} from '../../common/utils/urlUtils'
 
 export default class Jsonp {
   constructor(opts) {

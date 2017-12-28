@@ -63,8 +63,8 @@
         this.searchUtil.search(searchStr, (status, result) => {
           if (status === 'complete' && result.count > 0) {
             this.searchResults = result.tips
-                .filter(({location}) => !!location)
-                .map(({name, district, location}) => ({name, district, location}))
+              .filter(({location}) => !!location)
+              .map(({name, district, location}) => ({name, district, location}))
           } else {
             this.clearSearchResults()
           }

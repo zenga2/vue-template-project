@@ -9,7 +9,7 @@ export default {
 
     // init injectObj
     Object.keys(validators)
-        .forEach(prop => injectObj[prop] = {})
+      .forEach(prop => injectObj[prop] = {})
 
     // inject 'validators' prop in data
     injectProp('validators', injectObj, this)
@@ -39,11 +39,11 @@ function initWatchListener() {
 
     // add listener
     this.$watch(
-        prop,
-        function (newValue) {
-          this.validators[prop] = runValidator(newValue, rule, tip)
-        },
-        {immediate: true}
+      prop,
+      function (newValue) {
+        this.validators[prop] = runValidator(newValue, rule, tip)
+      },
+      {immediate: true}
     )
   }
 }

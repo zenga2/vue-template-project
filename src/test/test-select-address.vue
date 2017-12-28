@@ -13,7 +13,7 @@
   import selectAddress from '../components/select-address/select-address.vue'
 
   export default {
-    data () {
+    data() {
       return {
         isShow: true,
         provinceData: [],
@@ -23,7 +23,7 @@
       }
     },
     methods: {},
-    created () {
+    created() {
       window.vm = this
       this.$ldService.getAddressData()
         .then(({provinceList, cityList, countyList}) => {

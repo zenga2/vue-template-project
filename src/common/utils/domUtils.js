@@ -1,4 +1,4 @@
-import { each } from './utils'
+import {each} from './utils'
 
 function removeElement(el) {
   if (typeof el === 'string') {

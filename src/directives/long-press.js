@@ -1,4 +1,4 @@
-import { Touch, fireEvent } from '../common/utils/eventUtils'
+import {Touch, fireEvent} from '../common/utils/eventUtils'
 
 const storeMap = new Map()
 const MIN_DURATION = 350
@@ -10,10 +10,10 @@ const MIN_DURATION = 350
 // 这样end方法计算的时间间隔就不正确了( = 正确值+弹框显示的时间间隔)
 // .pre: 预绑定 同时value要传一个数组[childClass, handle]
 export default {
-  bind (el, binding) {
+  bind(el, binding) {
     let currElData = {
       touch: new Touch(el, {
-        start (e) {
+        start(e) {
           // 是否是预绑定
           let isPreBind = binding.modifiers && binding.modifiers.pre
 
@@ -22,7 +22,7 @@ export default {
           }, MIN_DURATION)
         },
 
-        end () {
+        end() {
           let data = storeMap.get(el)
           let timeoutId = data && data.timeoutId
           let interval = this.endTime - this.startTime
@@ -37,7 +37,7 @@ export default {
     storeMap.set(el, currElData)
   },
 
-  unbind (el) {
+  unbind(el) {
     let data = storeMap.get(el)
 
     if (data && data.touch) {

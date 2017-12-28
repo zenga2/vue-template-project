@@ -34,9 +34,9 @@
 
 <script type="text/ecmascript-6">
   import picker from '../picker/picker.vue'
-  import { padLeft } from '../../common/utils/stringUtils'
-  import { isLeapYear } from '../../common/utils/dateUtils'
-  import { debounce } from '../../common/utils/utils'
+  import {padLeft} from '../../common/utils/stringUtils'
+  import {isLeapYear} from '../../common/utils/dateUtils'
+  import {debounce} from '../../common/utils/utils'
 
   function getCurrYear() {
     return new Date().getFullYear()

@@ -1,7 +1,7 @@
 import Http from '../http'
 import serviceConfig from '../../service.config'
 import globalConfig from '../../global.config'
-import { each } from '../../common/utils/utils'
+import {each} from '../../common/utils/utils'
 import Vue from 'vue'
 
 const http = new Http()

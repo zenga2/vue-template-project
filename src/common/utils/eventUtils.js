@@ -1,5 +1,5 @@
-import { system, os } from './browser-detect'
-import { findAncestor } from './utils'
+import {system, os} from './browser-detect'
+import {findAncestor} from './utils'
 
 // os.ios和os.android是为了兼容chrome的手机模拟模式
 const isMobile = system.isMobile || os.ios || os.android
@@ -181,4 +181,4 @@ function fireEvent(e, isPreBind, fn, rootEl) {
   }
 }
 
-export { Touch, isSupportsPassive, fireEvent }
+export {Touch, isSupportsPassive, fireEvent}

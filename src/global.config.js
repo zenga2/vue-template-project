@@ -14,9 +14,9 @@ const devConfig = {
 }
 
 export default Object.assign(
-    {},
-    commonConfig,
-    process.env.NODE_ENV === 'production'
-        ? proConfig
-        : devConfig
+  {},
+  commonConfig,
+  process.env.NODE_ENV === 'production'
+    ? proConfig
+    : devConfig
 )

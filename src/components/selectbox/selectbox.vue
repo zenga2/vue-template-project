@@ -26,11 +26,11 @@
     props: {
       needDeleteBtn: {type: Boolean, default: true},
       needCancelBtn: {type: Boolean, default: true},
-      dataList: {type: Array, default () { return [] }},
+      dataList: {type: Array, default() { return [] }},
       value: {type: [Object]},
       title: {type: String, default: ''}
     },
-    data () {
+    data() {
       return {
         // 私有属性，保存当前选中状态
         pValue: undefined,
@@ -38,26 +38,26 @@
       }
     },
     methods: {
-      deleteFn () {
+      deleteFn() {
         this.pValue = undefined
 
         this.hide()
       },
 
-      toggle () { this.isShow = !this.isShow },
+      toggle() { this.isShow = !this.isShow },
 
-      show () { this.isShow = true },
+      show() { this.isShow = true },
 
-      hide () { this.isShow = false },
+      hide() { this.isShow = false },
 
-      cancelFn () {
+      cancelFn() {
         this.$emit('cancel')
 
         this.hide()
       },
 
       // 处理点击选择项的操作
-      selectItem (e) {
+      selectItem(e) {
         let target = e.target
         let index
 
@@ -70,7 +70,7 @@
       }
     },
     watch: {
-      isShow (newValue) {
+      isShow(newValue) {
         let selectBox = this.$refs.selectBox
 
         if (newValue === true) {
@@ -87,7 +87,7 @@
       },
 
       value: {
-        handler (newObj) {
+        handler(newObj) {
           if (!newObj && this.pValue !== undefined) {
             this.pValue = undefined
             return
@@ -101,7 +101,7 @@
         deep: true
       },
 
-      pValue (newValue) {
+      pValue(newValue) {
         let currItem = {}
 
         for (let item of this.dataList) {
@@ -115,7 +115,7 @@
         this.$emit('change', currItem)
       }
     },
-    mounted () {
+    mounted() {
       this.$nextTick(() => {
         if (typeof this.value === 'object') {
           this.pValue = this.value.value

@@ -1,9 +1,9 @@
-import { fireEvent } from '../common/utils/eventUtils'
+import {fireEvent} from '../common/utils/eventUtils'
 
 const storeMap = new Map()
 
 export default {
-  bind (el, binding) {
+  bind(el, binding) {
     const eventType = binding.arg
     const handler = (e) => {
       fireEvent(e, true, binding.value, el)
@@ -14,7 +14,7 @@ export default {
     storeMap.set(el, {eventType, handler})
   },
 
-  unbind (el) {
+  unbind(el) {
     const data = storeMap.get(el)
 
     if (data && data.handler) {

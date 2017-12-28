@@ -1,4 +1,4 @@
-import { isArray } from './typeUtils'
+import {isArray} from './typeUtils'
 
 function each(obj, fn) {
   if (!obj || !fn) return

@@ -159,7 +159,7 @@
       // 这一步必须放在填充默认值后面
       let typeArr = ['addLine', 'resetNum', 'emergencyTip', 'preTip']
       if (typeArr.indexOf(type) > -1
-          && this.$ldUtils.isMiddleMachine(otherParam.terminal)) {
+        && this.$ldUtils.isMiddleMachine(otherParam.terminal)) {
         this.filterLineBarrel()
       }
 

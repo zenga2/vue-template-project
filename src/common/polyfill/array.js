@@ -1,4 +1,4 @@
-import { ployfill } from '../utils/utils'
+import {ployfill} from '../utils/utils'
 
 
 ployfill(Array.prototype, {

@@ -9,42 +9,42 @@ let posMap = {}
 let elMap = {}
 
 export default {
-    beforeRouteEnter (to, from, next) {
-        next(vm => {
-            let currPage = to.name
-            let pageList = vm.pageList
-            let elArr = elMap[currPage]
-            let posArr = posMap[currPage]
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      let currPage = to.name
+      let pageList = vm.pageList
+      let elArr = elMap[currPage]
+      let posArr = posMap[currPage]
 
-            // 虽然beforeRouteLeave中已过滤，所以还是要再过滤一遍，
-            // 因为它可能在下一个页面跳转的当前页的上一个页面，而不是返回当前页
-            if (pageList && pageList.indexOf(from.name) > -1 && elArr) {
-                elArr.forEach((el, index) => el.scrollTop = posArr[index])
-            }
+      // 虽然beforeRouteLeave中已过滤，所以还是要再过滤一遍，
+      // 因为它可能在下一个页面跳转的当前页的上一个页面，而不是返回当前页
+      if (pageList && pageList.indexOf(from.name) > -1 && elArr) {
+        elArr.forEach((el, index) => el.scrollTop = posArr[index])
+      }
 
-            elMap[currPage] = posMap[currPage] = undefined
+      elMap[currPage] = posMap[currPage] = undefined
 
-            vm.enterPage && vm.enterPage(to, from)
-        })
-    },
+      vm.enterPage && vm.enterPage(to, from)
+    })
+  },
 
-    beforeRouteLeave (to, from, next) {
-        let pageList = this.pageList
-        let rootEl = this.$el
-        let currPage = from.name
-        let elArr
+  beforeRouteLeave(to, from, next) {
+    let pageList = this.pageList
+    let rootEl = this.$el
+    let currPage = from.name
+    let elArr
 
-        if (pageList && pageList.indexOf(to.name) > -1) {
-            elArr = Array.from(rootEl.querySelectorAll('.-save-pos-'))
+    if (pageList && pageList.indexOf(to.name) > -1) {
+      elArr = Array.from(rootEl.querySelectorAll('.-save-pos-'))
 
-            if (elArr.length === 0) {
-                elArr.push(rootEl)
-            }
+      if (elArr.length === 0) {
+        elArr.push(rootEl)
+      }
 
-            elMap[currPage] = elArr
-            posMap[currPage] = elArr.map(el => el.scrollTop)
-        }
-
-        next()
+      elMap[currPage] = elArr
+      posMap[currPage] = elArr.map(el => el.scrollTop)
     }
+
+    next()
+  }
 }

@@ -2,7 +2,7 @@ import ajax from './ajax'
 import InterceptorManager from './interceptor-manager'
 import DEFAULT_OPTS from './default-opts'
 import Cancel from './cancel'
-import { isPlainObject } from '../../common/utils/typeUtils'
+import {isPlainObject} from '../../common/utils/typeUtils'
 
 export default class Http {
   constructor(opts) {

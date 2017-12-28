@@ -58,15 +58,15 @@
     computed: {
       isPassCheck() {
         return this.selectedValue === this.currObj.otherValue
-            ? !!this.otherText
-            : this.selectedValue !== undefined
+          ? !!this.otherText
+          : this.selectedValue !== undefined
       }
     },
     methods: {
       okFn() {
         let value = this.selectedValue === this.currObj.otherValue
-            ? this.otherText
-            : this.selectedValue
+          ? this.otherText
+          : this.selectedValue
 
         this.$ldUtils.setPageParam(this.toPageName, value)
         this.$router.back()

@@ -51,7 +51,7 @@ function isFunction(arg) {
 
 function isPrimitive(arg) {
   return arg === null ||
-      typeof arg !== 'object' && typeof arg !== 'function'
+    typeof arg !== 'object' && typeof arg !== 'function'
 }
 
 // 仅仅判断自有属性,同时如果参数不是Plain Object

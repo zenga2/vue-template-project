@@ -25,7 +25,7 @@
 
 <script type="text/ecmascript-6">
   import dataList from './data'
-  import { Touch } from '../../common/utils/eventUtils'
+  import {Touch} from '../../common/utils/eventUtils'
 
   export default {
     data() {

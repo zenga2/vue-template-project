@@ -37,7 +37,7 @@
 <script type="text/ecmascript-6">
   import cell from '../cell/cell.vue'
   import selectbox from '../selectbox/selectbox.vue'
-  import { debounce } from '../../common/utils/utils'
+  import {debounce} from '../../common/utils/utils'
 
   // provinceData: label value
   // cityData: provinceId label value
@@ -52,12 +52,12 @@
 
   export default {
     props: {
-      provinceData: {type: Array, default () { return [] }},
-      cityData: {type: Array, default () { return [] }},
-      countyData: {type: Array, default () { return [] }},
-      value: {type: Object, default () { return {} }}
+      provinceData: {type: Array, default() { return [] }},
+      cityData: {type: Array, default() { return [] }},
+      countyData: {type: Array, default() { return [] }},
+      value: {type: Object, default() { return {} }}
     },
-    data () {
+    data() {
       return {
         provinceItem: {},
         cityItem: {},
@@ -65,11 +65,11 @@
       }
     },
     computed: {
-      provinceList () {
+      provinceList() {
         return this.provinceData
       },
 
-      cityList () {
+      cityList() {
         // 因为下面这行赋值语句只会调用setter，不会调用getter
         // 所以该计算属性不会把cityItem加入依赖列表
         // 所以下面这行代码的意思是当provinceId变化时，清空cityId
@@ -84,7 +84,7 @@
         }
       },
 
-      countyList () {
+      countyList() {
         // 因为下面这行赋值语句只会调用setter，不会调用getter
         // 所以该计算属性不会把countyItem加入依赖列表
         // 所以下面这行代码的意思是当provinceId或者cityId变化时，清空countyId
@@ -103,7 +103,7 @@
       }
     },
     methods: {
-      toggleBox (boxKey) {
+      toggleBox(boxKey) {
         this.$refs[boxKey].toggle()
       },
 
@@ -129,7 +129,7 @@
         })
       }),
 
-      refreshAddress (currAddress, fn) {
+      refreshAddress(currAddress, fn) {
         let promise = this.$nextTick()
 
         valuePropArr.forEach((dProp, index) => {
@@ -146,7 +146,7 @@
     },
     watch: {
       value: {
-        handler (newAddress) {
+        handler(newAddress) {
           if (!newAddress) {
             this.provinceItem = this.cityItem = this.countyItem = {}
             return
@@ -161,7 +161,7 @@
         deep: true
       }
     },
-    mounted () {
+    mounted() {
       let currAddress = this.value
 
       // 初始化时填充地址

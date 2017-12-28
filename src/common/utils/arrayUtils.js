@@ -1,4 +1,4 @@
-function remove (item, arr) {
+function remove(item, arr) {
   let index = arr.indexOf(item)
 
   if (index > -1) {
@@ -6,12 +6,12 @@ function remove (item, arr) {
   }
 }
 
-function includes (item, arr) {
+function includes(item, arr) {
   return arr.indexOf(item) > -1
 }
 
 // 数组去重
-function unique (arr) {
+function unique(arr) {
   let tmpArr = []
   let item
 
@@ -25,6 +25,6 @@ function unique (arr) {
   return tmpArr
 }
 
-export { remove, includes, unique }
+export {remove, includes, unique}
 
 

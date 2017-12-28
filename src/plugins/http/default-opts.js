@@ -1,7 +1,7 @@
-import { addDataToUrl, serialize } from '../../common/utils/urlUtils'
+import {addDataToUrl, serialize} from '../../common/utils/urlUtils'
 import createError from './create-error'
-import { isPlainObject } from '../../common/utils/typeUtils'
-import { each } from '../../common/utils/utils'
+import {isPlainObject} from '../../common/utils/typeUtils'
+import {each} from '../../common/utils/utils'
 
 const contentTypeMap = {
   urlencoded: 'application/x-www-form-urlencoded;charset=utf-8',
