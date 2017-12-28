@@ -1,5 +1,7 @@
 /* eslint-disable */
-function detect(ua, platform) {
+function detect() {
+  let ua = navigator.userAgent
+  let platform = navigator.platform
   let os = {}
   let browser = {}
   let webkit = ua.match(/Web[kK]it[\/]?([\d.]+)/)
@@ -75,6 +77,6 @@ function detect(ua, platform) {
   return {os, browser, system}
 }
 
-let {os, browser, system} = detect(navigator.userAgent, navigator.platform)
+let {os, browser, system} = detect()
 
 export {os, browser, system, detect}
