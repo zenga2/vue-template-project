@@ -51,7 +51,7 @@ function insertInputEl() {
   return inputEl
 }
 
-function blobToBase64(blob, cb) {
+export function blobToBase64(blob, cb) {
   let reader = new FileReader()
   reader.onload = function () {
     cb && cb(reader.result)
