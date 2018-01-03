@@ -42,7 +42,7 @@
         line-height: header-height-value
         font-size: two-level-font-size-value
         color: #333
-    .page-content
+    .page-main
       scroll(1)
       position: absolute
       top: header-height-value
@@ -62,6 +62,6 @@
         opacity: 0.8
         background: #d0d0d0
     &.no-footer
-      .page-content
+      .page-main
         bottom: 0
 </style>
