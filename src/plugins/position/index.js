@@ -1,5 +1,4 @@
 import Loading from '../../components/loading'
-import APath from '../../components/apath'
 import StorageUtil from '../../common/utils/storageUtils'
 import {includes} from '../../common/utils/utils'
 import Http from '../http'
@@ -7,32 +6,7 @@ import Http from '../http'
 const sessionStorageUtil = new StorageUtil('sessionStorage')
 const posLoading = new Loading(false, '')
 
-let aPath
 let geolocation
-
-// 地址格式: <经度>,<纬度>,<地址名称>
-function goToThisPlace(to, from, closeFn) {
-  if (!aPath) {
-    aPath = new APath()
-  }
-
-  if (!from) {
-    getCurrPos((result) => {
-      if (result) {
-        let {lng, lat} = result.position
-        from = `${lng},${lat},`
-      } else {
-        from = ''
-      }
-
-      aPath.toThisPage(to, from, closeFn)
-    })
-  } else {
-    aPath.toThisPage(to, from, closeFn)
-    // 每次路径规划后更新当前位置
-    gdPositioning(null, null)
-  }
-}
 
 function getAmapKey() {
   return {
