@@ -1,4 +1,5 @@
 import ImageCompressor from '@xkeshi/image-compressor'
+import {blobToBase64} from '../../common/utils/utils'
 
 export default function (options) {
   let inputEl = insertInputEl()
@@ -49,12 +50,4 @@ function insertInputEl() {
   document.body.appendChild(inputEl)
 
   return inputEl
-}
-
-export function blobToBase64(blob, cb) {
-  let reader = new FileReader()
-  reader.onload = function () {
-    cb && cb(reader.result)
-  }
-  reader.readAsDataURL(blob)
 }

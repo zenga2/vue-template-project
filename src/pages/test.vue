@@ -11,6 +11,7 @@
 <script type="text/ecmascript-6">
   import page from '../components/page/page'
   import chooseImage from '../plugins/choose-image'
+  import Http from '../plugins/http'
 
   export default {
     name: 'n_test',
@@ -26,20 +27,30 @@
           quality: 0.8,
           mimeType: 'image/jpeg',
           resultType: 'blob'
-        }).then(currBlob => {
-          function blobToBase64(blob, cb) {
-            let reader = new FileReader()
-            reader.onload = function () {
-              cb && cb(reader.result)
-            }
-            reader.readAsDataURL(blob)
-          }
-
-          blobToBase64(currBlob, (base64) => {
-            this.src = base64
+        }).then(file => {
+          this.uploadFile(file).then(data => {
+            console.log('data', data)
           })
-          console.log(currBlob)
         })
+      },
+
+      uploadFile(file) {
+        let http = new Http()
+        return http.post('https://upload.qiniup.com/', {
+          requestType: 'formData',
+          body: {
+            token: 'A8SIAnj_MoLaBFRnPlmdCi78eLSUdY57VbMgFJZy:rRiDZbbvugLfAwyJm7DLT-5kGjc=:eyJzY29wZSI6ImNkdC1pbWFnZXMiLCJkZWFkbGluZSI6MTU5NTQ4NTcxMX0=',
+            file: file
+          }
+        })
+      },
+
+      blobToBase64(blob, cb) {
+        let reader = new FileReader()
+        reader.onload = function () {
+          cb && cb(reader.result)
+        }
+        reader.readAsDataURL(blob)
       }
     },
     beforeCreate() {},

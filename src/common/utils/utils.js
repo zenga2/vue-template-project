@@ -215,6 +215,14 @@ function ployfill(prototype, opts) {
   })
 }
 
+function blobToBase64(blob, cb) {
+  let reader = new FileReader()
+  reader.onload = function () {
+    cb && cb(reader.result)
+  }
+  reader.readAsDataURL(blob)
+}
+
 export {
   each,
   extend,
@@ -231,5 +239,6 @@ export {
   switchPage,
   includes,
   deepClone,
-  ployfill
+  ployfill,
+  blobToBase64
 }

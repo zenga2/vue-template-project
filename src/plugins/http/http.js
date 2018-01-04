@@ -62,13 +62,13 @@ export default class Http {
   // 数据配置在param
   get(url, opts = {}) {
     opts.method = 'GET'
-    this.request(url, opts)
+    return this.request(url, opts)
   }
 
   // 数据配置在body
   post(url, opts = {}) {
     opts.method = 'POST'
-    this.request(url, opts)
+    return this.request(url, opts)
   }
 
   static createCancel() {
