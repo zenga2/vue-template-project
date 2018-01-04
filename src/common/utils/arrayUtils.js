@@ -26,5 +26,3 @@ function unique(arr) {
 }
 
 export {remove, includes, unique}
-
-
