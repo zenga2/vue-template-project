@@ -1,7 +1,8 @@
-import Loading from '@components/loading'
-import APath from '@components/apath'
-import StorageUtil from '@common/utils/storageUtils'
-import {includes} from '@common/utils/utils'
+import Loading from '../../components/loading'
+import APath from '../../components/apath'
+import StorageUtil from '../../common/utils/storageUtils'
+import {includes} from '../../common/utils/utils'
+import Http from '../http'
 
 const sessionStorageUtil = new StorageUtil('sessionStorage')
 const posLoading = new Loading(false, '')
@@ -41,9 +42,9 @@ function getAmapKey() {
 
 // ip定位
 function ipPositioning(callback) {
-  let xhr = new Ajax()
+  let http = new Http()
 
-  xhr.get('http://restapi.amap.com/v3/ip', {
+  http.get('http://restapi.amap.com/v3/ip', {
     key: getAmapKey().webServiceKey
   }).then(response => {
     if (response.status === '1') {
@@ -221,16 +222,12 @@ function calculateDistance(toPos, currPos, isToStr) {
   return distance
 }
 
-export default {
-  install(Vue) {
-    Vue.ldUtils = Vue.prototype.$ldUtils = {
-      goToThisPlace,
-      ipPositioning,
-      gdPositioning,
-      positioning,
-      getPosByAddress,
-      calculateDistance,
-      getCurrPos
-    }
-  }
+export {
+  goToThisPlace,
+  ipPositioning,
+  gdPositioning,
+  positioning,
+  getPosByAddress,
+  calculateDistance,
+  getCurrPos
 }
