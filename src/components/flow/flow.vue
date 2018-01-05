@@ -58,11 +58,11 @@
     & > div
       position: relative
       padding-left: 30px
-      height: 50px
       &:after
         z-index: 1
         position: absolute
         left: 0
+        top: 0
         width: 14px
         height: 14px
         border-radius: 50%
