@@ -5,6 +5,7 @@ import './common/stylus/index.styl'
 
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import pkg from '../package.json'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -26,6 +27,9 @@ Vue.use(commonComponent)
 Vue.prototype.$ldBus = new Vue()
 
 Vue.config.productionTip = false
+
+// app version
+window['_my_app_'] = pkg.version
 
 /* eslint-disable no-new */
 new Vue({
