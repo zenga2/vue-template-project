@@ -94,6 +94,7 @@
       },
 
       okFn() {
+        this.refreshDate()
         this.hide()
 
         this.onOk && this.onOk()
