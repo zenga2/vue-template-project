@@ -25,11 +25,11 @@ export default class Cancel {
 
       if (!currXhr) return
 
-      if ('abort' in currXhr) {
-        xhrReject && xhrReject(
-          createError('cancelRequest', 'Cancel request', opts)
-        )
+      xhrReject && xhrReject(
+        createError('cancelRequest', 'Cancel request', opts)
+      )
 
+      if ('abort' in currXhr) {
         currXhr.abort()
       }
 
