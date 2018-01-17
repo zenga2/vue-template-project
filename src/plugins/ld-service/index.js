@@ -131,12 +131,17 @@ function dealError(error) {
     case 'dataError':
       tipStr = '数据格式错误'
       break
+    // 手动取消请求时，不报异常
+    case 'cancelRequest':
+      break
     default:
       tipStr = '未知错误'
   }
 
-  console.error(error)
-  Vue.ldUtils.toast(tipStr)
+  if (error.errorType !== 'cancelRequest') {
+    Vue.ldUtils.toast(tipStr)
+  }
+
   return Promise.reject(null)
 }
 
