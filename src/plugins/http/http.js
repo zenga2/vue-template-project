@@ -39,7 +39,16 @@ export default class Http {
       })
     }
 
-    let promise = Promise.resolve(requestOpts)
+    let promise = new Promise((resolve) => {
+      if ('await' in requestOpts) {
+        // await opts.await ms
+        setTimeout(() => {
+          resolve(requestOpts)
+        }, requestOpts.await)
+      } else {
+        resolve(requestOpts)
+      }
+    })
     let chain = [dispatchRequest, dealOptionsError]
 
     // request拦截器先配置先执行

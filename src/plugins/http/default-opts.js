@@ -63,6 +63,7 @@ export default {
   // timeout
   // withCredentials
   // cancel
+  // await
   transformRequest(opts) {
     console.log('transformRequest')
     preDealRequest(opts)
