@@ -4,9 +4,11 @@
       <span class="label">{{label}}</span>
       <i class="cell-icon icon-font-unfold"></i>
     </div>
-    <div class="dropbox-content" :style="styleObj">
-      <slot></slot>
-    </div>
+    <transition name="dropbox">
+      <div v-show="isUnfold" class="dropbox-content">
+        <slot></slot>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -15,21 +17,20 @@
     props: {
       label: {default: ''},
       value: {default: ''},
-      contentHeight: {type: Number, default: 180}
+      needUnfold: {type: Boolean, default: false},
+      needScrollToTop: {type: Boolean, default: false}
     },
     data() {
       return {
-        isUnfold: false
-      }
-    },
-    computed: {
-      styleObj() {
-        return this.isUnfold ? {height: this.contentHeight + 'px'} : {height: '0'}
+        isUnfold: this.needUnfold
       }
     },
     methods: {
       switchState() {
         this.isUnfold = !this.isUnfold
+        this.needScrollToTop && this.isUnfold && setTimeout(() => {
+          this.$el.scrollIntoView()
+        }, 500)
       }
     }
   }
@@ -54,14 +55,25 @@
         right: 16px
         line-height: normal-height-value
         font-size: 24px
-    .cell-icon, .dropbox-content
+    .cell-icon
       transition: 300ms
       transform: translateZ(0)
     .dropbox-content
       overflow: hidden
       padding: 0 16px
       background: #f6f6f6
+      transform-origin: top center
     &.unfold
       .cell-icon
         transform: rotate(180deg)
+
+    .dropbox-enter-active, .dropbox-leave-active
+      transform: translateZ(0)
+      transition: 300ms
+
+    .dropbox-enter, .dropbox-leave-to
+      transform: scaleY(0)
+
+    .dropbox-enter-to, .dropbox-leave
+      transform: scaleY(1)
 </style>
