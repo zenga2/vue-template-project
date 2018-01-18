@@ -34,7 +34,7 @@ export default class Http {
       console.log('dealOptionsError')
       return Promise.reject({
         errorType: 'dealOptionsError',
-        desc: 'Deal options error before exe request',
+        desc: 'Deal options error before dispatch request',
         opts: requestOpts
       })
     }
