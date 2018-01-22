@@ -192,9 +192,15 @@ const createService = url =>
   }
 
 // 生成各服务方法
-each(serviceConfig.service, function (action, method) {
-  let url = globalConfig.uriStr + action
-  ldService[method] = createService(url)
+each(serviceConfig.service, function (path, method) {
+  let baseUri = globalConfig.uriStr
+
+  if (typeof path === 'object') {
+    baseUri = globalConfig[path.base]
+    path = path.path
+  }
+
+  ldService[method] = createService(baseUri + path)
 })
 
 export default {
