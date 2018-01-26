@@ -35,55 +35,73 @@
 <script type="text/ecmascript-6">
   import picker from '../picker/picker.vue'
   import {padLeft} from '../../common/utils/stringUtils'
-  import {isLeapYear} from '../../common/utils/dateUtils'
+  import {isLeapYear, parse, modifyDate} from '../../common/utils/dateUtils'
   import {debounce} from '../../common/utils/utils'
-
-  function getCurrYear() {
-    return new Date().getFullYear()
-  }
 
   const daysMap = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
   export default {
     props: {
-      startYear: {
-        type: [Number, String],
-        default() { return getCurrYear() - 20 }
-      },
-      endYear: {
-        type: [Number, String],
-        default() { return getCurrYear() + 20 }
-      },
+      startDate: {type: String},
+      endDate: {type: String},
       // year, month, day都必须为字符串
       value: {
         type: Object,
         default() { return {} }
       },
       onCancel: {type: Function},
-      onOk: {type: Function}
+      onOk: {type: Function},
+      isDelay: {type: Boolean, default: false}
     },
     data() {
       return {
         yearList: undefined,
-        monthList: undefined,
         yearIndex: undefined,
         monthIndex: undefined,
         dayIndex: undefined,
-        isShow: false
+        isShow: false,
+        dateRange: {
+          startDate: this.startDate,
+          endDate: this.endDate
+        }
       }
     },
     computed: {
+      monthList() {
+        let year = parseInt(this.yearList[this.yearIndex].value, 10)
+        let {startYear, startMonth, endYear, endMonth} = this.parseDateRange()
+        let maxMonth = 12
+
+        if (year === startYear) {
+          maxMonth = startMonth
+        } else if (year === endYear) {
+          maxMonth = endMonth
+        }
+
+        return this.createItemArr(1, maxMonth)
+      },
+
       dayList() {
-        let year = Number(this.yearList[this.yearIndex].value)
-        let month = Number(this.monthList[this.monthIndex].value)
-        let daysOfMonth = daysMap[month - 1]
+        let year = parseInt(this.yearList[this.yearIndex].value, 10)
+        let month = parseInt(this.monthList[this.monthIndex].value, 10)
+        let {
+          startYear, startMonth, startDay,
+          endYear, endMonth, endDay
+        } = this.parseDateRange()
+        let maxDay = daysMap[month - 1]
 
         // 闰年
         if (month === 2 && isLeapYear(year)) {
-          daysOfMonth = 29
+          maxDay = 29
         }
 
-        return this.createItemArr(1, daysOfMonth)
+        if (year === startYear && month === startMonth) {
+          maxDay = startDay
+        } else if (year === endYear && month === endMonth) {
+          maxDay = endDay
+        }
+
+        return this.createItemArr(1, maxDay)
       }
     },
     methods: {
@@ -94,7 +112,15 @@
       },
 
       okFn() {
-        this.refreshDate()
+        let selectedDate = this.getCurrDate()
+        let isChange = !this.isSameDate(selectedDate, this.value)
+        let isDelay = this.isDelay
+
+        if (!isDelay || (isDelay && isChange)) {
+          this.$emit('input', selectedDate)
+          this.$emit('change', selectedDate)
+        }
+
         this.hide()
 
         this.onOk && this.onOk()
@@ -113,6 +139,7 @@
       },
 
       refreshAllPicker() {
+        // 当可滑动区域改变后，需要刷新BScroll
         setTimeout(() => {
           let props = ['yearPicker', 'monthPicker', 'dayPicker']
 
@@ -151,12 +178,64 @@
         return 0
       },
 
-      initData() {
-        let {startYear, endYear, value} = this
+      parseDate(date) {
+        if (typeof date === 'string') {
+          date = parse(date, 'yyyy-MM-dd')
+        }
+
+        return {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate()
+        }
+      },
+
+      parseDateRange() {
+        let {startDate, endDate} = this.dateRange
         let currDate = new Date()
 
+        if (!startDate && !endDate) {
+          startDate = modifyDate(currDate, '-10y')
+          endDate = modifyDate(currDate, '10y')
+        } else if (!startDate) {
+          startDate = currDate
+        } else if (!endDate) {
+          endDate = currDate
+        }
+
+        startDate = this.parseDate(startDate)
+        endDate = this.parseDate(endDate)
+
+        return {
+          startYear: startDate.year,
+          startMonth: startDate.month,
+          startDay: startDate.day,
+          endYear: endDate.year,
+          endMonth: endDate.month,
+          endDay: endDate.day
+        }
+      },
+
+      // 设置时间范围
+      setDateRange(dateRange = {}) {
+        this.dateRange = dateRange
+        this.initData()
+      },
+
+      getCurrDate() {
+        return {
+          year: parseInt(this.yearList[this.yearIndex].value, 10),
+          month: parseInt(this.monthList[this.monthIndex].value, 10),
+          day: parseInt(this.dayList[this.dayIndex].value, 10)
+        }
+      },
+
+      initData() {
+        let value = this.value
+        let currDate = new Date()
+
+        let {startYear, endYear} = this.parseDateRange()
         this.yearList = this.createItemArr(startYear, endYear, false)
-        this.monthList = this.createItemArr(1, 12)
 
         // init year
         let year = isNaN(Number(value.year))
@@ -177,12 +256,23 @@
           : day - 1
       },
 
+      isSameDate(d1, d2) {
+        return d1.year === d2.year && d1.month === d2.month && d1.day === d2.day
+      },
+
+      // 恢复状态
+      recoveryState() {
+        let {year, month, day} = this.value
+
+        this.yearIndex = this.findIndex(this.yearList, year)
+        this.monthIndex = month - 1
+        this.dayIndex = day - 1
+      },
+
       refreshDate: debounce(function () {
-        let selectedDate = {
-          year: this.yearList[this.yearIndex].value,
-          month: this.monthList[this.monthIndex].value,
-          day: this.dayList[this.dayIndex].value
-        }
+        let selectedDate = this.getCurrDate()
+
+        if (this.isDelay) return
 
         this.$emit('input', selectedDate)
         this.$emit('change', selectedDate)
@@ -194,9 +284,7 @@
     watch: {
       value: {
         handler(newObj) {
-          let year = this.yearList[this.yearIndex].value
-          let month = this.monthList[this.monthIndex].value
-          let day = this.dayList[this.dayIndex].value
+          let {year, month, day} = this.getCurrDate()
           let currDate = new Date()
 
           if (newObj.year !== year) {
@@ -217,10 +305,21 @@
       },
 
       isShow(newValue) {
+        // date-picker创建时，一般是隐藏状态, 导致BScroll计算的size信息是错误的
+        // 所以切换为显示状态时，需要刷新BScroll
         if (newValue === true) {
           this.refreshAllPicker()
+        } else if (this.isDelay) {
+          // 当组件隐藏时，如果数据不一致，就回滚状态
+          setTimeout(() => {
+            let currDate = this.getCurrDate()
+            if (!this.isSameDate(currDate, this.value)) {
+              this.recoveryState()
+            }
+          }, 200)
         }
       }
+
     },
     components: {picker}
   }
