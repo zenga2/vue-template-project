@@ -23,7 +23,7 @@
     },
     data() {
       return {
-        currIndex: 0
+        currIndex: this.value
       }
     },
     methods: {
