@@ -68,27 +68,29 @@
     },
     computed: {
       monthList() {
-        let year = parseInt(this.yearList[this.yearIndex].value, 10)
+        let year = this.findValue(this.yearList, this.yearIndex)
         let {startYear, startMonth, endYear, endMonth} = this.parseDateRange()
         let maxMonth = 12
+        let minMonth = 1
 
         if (year === startYear) {
-          maxMonth = startMonth
+          minMonth = startMonth
         } else if (year === endYear) {
           maxMonth = endMonth
         }
 
-        return this.createItemArr(1, maxMonth)
+        return this.createItemArr(minMonth, maxMonth)
       },
 
       dayList() {
-        let year = parseInt(this.yearList[this.yearIndex].value, 10)
-        let month = parseInt(this.monthList[this.monthIndex].value, 10)
+        let year = this.findValue(this.yearList, this.yearIndex)
+        let month = this.findValue(this.monthList, this.monthIndex)
         let {
           startYear, startMonth, startDay,
           endYear, endMonth, endDay
         } = this.parseDateRange()
         let maxDay = daysMap[month - 1]
+        let minDay = 1
 
         // 闰年
         if (month === 2 && isLeapYear(year)) {
@@ -96,12 +98,12 @@
         }
 
         if (year === startYear && month === startMonth) {
-          maxDay = startDay
+          minDay = startDay
         } else if (year === endYear && month === endMonth) {
           maxDay = endDay
         }
 
-        return this.createItemArr(1, maxDay)
+        return this.createItemArr(minDay, maxDay)
       }
     },
     methods: {
@@ -222,11 +224,20 @@
         this.initData()
       },
 
+      findValue(arr, index) {
+        let item = arr[index]
+        let val = item && item.value
+
+        return val === undefined
+          ? arr.length - 1
+          : parseInt(val, 10)
+      },
+
       getCurrDate() {
         return {
-          year: parseInt(this.yearList[this.yearIndex].value, 10),
-          month: parseInt(this.monthList[this.monthIndex].value, 10),
-          day: parseInt(this.dayList[this.dayIndex].value, 10)
+          year: this.findValue(this.yearList, this.yearIndex),
+          month: this.findValue(this.monthList, this.monthIndex),
+          day: this.findValue(this.dayList, this.dayIndex)
         }
       },
 
@@ -244,16 +255,16 @@
         this.yearIndex = this.findIndex(this.yearList, year)
 
         // init month
-        let month = Number(value.month)
-        this.monthIndex = isNaN(month)
-          ? currDate.getMonth()
-          : month - 1
+        let month = isNaN(Number(value.month))
+          ? currDate.getMonth() + 1
+          : value.month
+        this.monthIndex = this.findIndex(this.monthList, month)
 
         // init day
-        let day = Number(value.day)
-        this.dayIndex = isNaN(day)
-          ? currDate.getDate() - 1
-          : day - 1
+        let day = isNaN(Number(value.day))
+          ? currDate.getDate()
+          : value.day
+        this.dayIndex = this.findIndex(this.dayList, day)
       },
 
       isSameDate(d1, d2) {
@@ -265,8 +276,8 @@
         let {year, month, day} = this.value
 
         this.yearIndex = this.findIndex(this.yearList, year)
-        this.monthIndex = month - 1
-        this.dayIndex = day - 1
+        this.monthIndex = this.findIndex(this.monthList, month)
+        this.dayIndex = this.findIndex(this.dayList, day)
       },
 
       refreshDate: debounce(function () {
@@ -285,20 +296,17 @@
       value: {
         handler(newObj) {
           let {year, month, day} = this.getCurrDate()
-          let currDate = new Date()
 
           if (newObj.year !== year) {
             this.yearIndex = this.findIndex(this.yearList, newObj.year)
           }
 
           if (newObj.month !== month) {
-            let monthIndex = Number(newObj.month) - 1
-            this.monthIndex = isNaN(monthIndex) ? currDate.getMonth() : monthIndex
+            this.monthIndex = this.findIndex(this.monthList, newObj.month)
           }
 
           if (newObj.day !== day) {
-            let dayIndex = Number(newObj.day) - 1
-            this.dayIndex = isNaN(dayIndex) ? currDate.getDate() - 1 : dayIndex
+            this.dayIndex = this.findIndex(this.dayList, newObj.day)
           }
         },
         deep: true
