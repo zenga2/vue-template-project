@@ -370,10 +370,9 @@
         float: right
         color: blue-color-value
     .date-picker-content
-      font-size: 0
+      display: flex
       .picker-item
-        display: inline-block
-        width: 33.33333333333%
+        flex: 1
         font-size: 14px
 
   .date-picker
