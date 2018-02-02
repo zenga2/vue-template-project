@@ -50,12 +50,14 @@ http.interceptors.response.use(
 
 // flag  true: show  false: hide
 function toggleLoading(opts, flag) {
+  if (opts.isShowLoading === false) return
+
   // set text
   let loadingText = opts.loadingText || '加载中'
   Vue.ldUtils.loading.setText(loadingText)
 
   // show
-  if (flag && opts.isShowLoading !== false) {
+  if (flag) {
     Vue.ldUtils.loading.show()
     return
   }
@@ -93,16 +95,16 @@ function dealSuccess(response) {
   if (!checkPermissions(isLogOut, isPower)) {
     reLogin()
 
-    return Promise.reject(null)
+    return Promise.reject(data)
   }
 
   // 处理调接口出错的情形
   if (result === -1) {
     Vue.ldUtils.toast(msg)
-    return Promise.reject(null)
+    return Promise.reject(data)
   }
 
-  return response.data
+  return data
 }
 
 function dealError(error) {
@@ -142,7 +144,7 @@ function dealError(error) {
     Vue.ldUtils.toast(tipStr)
   }
 
-  return Promise.reject(null)
+  return Promise.reject(error)
 }
 
 const ldService = {
