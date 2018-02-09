@@ -67,6 +67,7 @@ function animation(workFn, duration) {
 
 // 设置函数两次运行之间的间隔
 // 例如500ms内函数只能运行一次
+// 函数节流(定时触发)
 function throttle(fn, interval) {
   let lastTime = +new Date()
 
@@ -79,6 +80,7 @@ function throttle(fn, interval) {
   }
 }
 
+// 函数去抖(只执行一次)
 function debounce(fn, wait = 0) {
   let timeoutId
 
