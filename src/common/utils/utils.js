@@ -1,9 +1,9 @@
-import {isArray} from './typeUtils'
+import {isArrayLike} from './typeUtils'
 
 function each(obj, fn) {
   if (!obj || !fn) return
 
-  if (isArray(obj)) {
+  if (isArrayLike(obj)) {
     for (let i = 0, len = obj.length; i < len; i++) {
       if (fn.call(obj, obj[i], i) === false) return
     }

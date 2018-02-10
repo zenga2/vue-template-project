@@ -87,6 +87,11 @@ function isBlob(val) {
   return getType(val) === 'blob'
 }
 
+function isArrayLike(collection) {
+  var length = collection.length
+  return typeof length === 'number' && length >= 0
+}
+
 export {
   getType,
   isArray,
@@ -108,5 +113,6 @@ export {
   isArrayBuffer,
   isArrayBufferView,
   isFile,
-  isBlob
+  isBlob,
+  isArrayLike
 }
