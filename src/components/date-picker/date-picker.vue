@@ -5,6 +5,7 @@
       <div class="date-picker">
         <div class="date-picker-header border-1px">
           <span @click.stop="cancelFn" class="cancel">取消</span>
+          <h2 class="title">选择日期</h2>
           <span @click.stop="okFn" class="ok">确定</span>
         </div>
         <div class="date-picker-content">
@@ -359,16 +360,23 @@
     bottom: 0
     width: 100%
     .date-picker-header
+      display: flex
       overflow: hidden
       border-1px(#d3d3d3)
       background: #fff
-      .cancel, .ok
-        padding: 0 16px
+      .title
+        flex: 1
+        text-align: center
+        color: #333
+      .title, .cancel, .ok
         line-height: 44px
         font-size: 16px
+      .cancel, .ok
+        padding: 0 16px
       .ok
-        float: right
         color: blue-color-value
+      .cancel
+        color: #666
     .date-picker-content
       display: flex
       .picker-item
