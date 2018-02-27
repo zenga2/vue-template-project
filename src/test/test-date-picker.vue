@@ -22,11 +22,5 @@
 </script>
 
 <style lang="stylus">
-  @import "../common/stylus/mixin.styl"
 
-  .test
-    .item
-      line-height: 52px
-      & > span
-        padding-right: 20px
 </style>
