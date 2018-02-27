@@ -158,12 +158,10 @@
         if (isNaN(start + end) || start > end) return []
 
         let arr = []
+        let str
         for (let i = start; i <= end; i++) {
-          if (isPadZero) {
-            i = padLeft(String(i), '0', 2)
-          }
-
-          arr.push({label: i, value: i})
+          str = isPadZero ? padLeft(String(i), '0', 2) : i
+          arr.push({label: str, value: i})
         }
 
         return arr
@@ -226,12 +224,12 @@
       },
 
       findValue(arr, index) {
-        let item = arr[index]
-        let val = item && item.value
+        if (arr.length === 0) throw new Error('数组参数arr不能是空数组')
 
-        return val === undefined
-          ? arr.length - 1
-          : parseInt(val, 10)
+        let item = arr[index] || arr[arr.length - 1]
+        let val = item.value
+
+        return parseInt(val, 10)
       },
 
       getCurrDate() {
