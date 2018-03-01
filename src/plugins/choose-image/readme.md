@@ -1,14 +1,6 @@
 ###插件choose-image用法
 
 ```javascript
-function blobToBase64(blob, cb) {
-  let reader = new FileReader()
-  reader.onload = function () {
-    cb && cb(reader.result)
-  }
-  reader.readAsDataURL(blob)
-}
-
 chooseImage({
   maxWidth: 300,
   quality: 0.8,
