@@ -208,11 +208,11 @@ function deepClone(obj) {
   return JSON.parse(JSON.stringify(obj))
 }
 
-function ployfill(prototype, opts) {
+function defineProps(obj, opts) {
   /* eslint-disable no-extend-native */
   each(opts, (value, key) => {
     if (!(key in prototype)) {
-      Object.defineProperty(Array.prototype, key, {value})
+      Object.defineProperty(obj, key, {value})
     }
   })
 }
@@ -241,6 +241,6 @@ export {
   switchPage,
   includes,
   deepClone,
-  ployfill,
+  defineProps,
   blobToBase64
 }

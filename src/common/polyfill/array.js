@@ -1,7 +1,7 @@
-import {ployfill} from '../utils/utils'
+import {defineProps} from '../utils/utils'
 
 
-ployfill(Array.prototype, {
+defineProps(Array.prototype, {
   includes(item) {
     return this.indexOf(item) > -1
   },
