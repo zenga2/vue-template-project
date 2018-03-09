@@ -104,7 +104,7 @@ const ruleList = {
     return emailRegExp.test(value)
   },
 
-  // 可以参考id-validator(可以从省份证中获取其他信息)
+  // 可以参考id-validator(可以从身份证中获取其他信息)
   idCard(value) {
     return idCardRegExp.test(value)
   }
