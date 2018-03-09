@@ -61,17 +61,11 @@ function initEvent(opts, resolve, reject) {
     xhr.upload.onprogress = onUploadProgress
   }
 
-  xhr.ontimeout = () => {
-    reject(createError('timeoutError', 'Timeout error', opts))
-  }
+  xhr.ontimeout = () => reject(createError('timeoutError', 'Timeout error', opts))
 
-  xhr.onabort = () => {
-    reject(createError('abortError', 'Abort error', opts))
-  }
+  xhr.onabort = () => reject(createError('abortError', 'Abort error', opts))
 
-  xhr.onerror = () => {
-    reject(createError('networkError', 'Network error', opts))
-  }
+  xhr.onerror = () => reject(createError('networkError', 'Network error', opts))
 
   xhr.onload = () => handle(opts, resolve, reject)
 
