@@ -1,5 +1,5 @@
 // 柯里化
-function curry(fn, thisArg) {
+function curry_2(fn, thisArg) {
   let len = fn.length
 
   let _curry = function () {
@@ -19,7 +19,7 @@ function curry(fn, thisArg) {
   return _curry.bind([])
 }
 
-function curry_two(fn, thisArg) {
+function curry(fn, thisArg) {
   let len = fn.length
 
   let _curry = function () {
