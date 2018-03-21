@@ -211,7 +211,7 @@ function deepClone(obj) {
 function defineProps(obj, opts) {
   /* eslint-disable no-extend-native */
   each(opts, (value, key) => {
-    if (!(key in prototype)) {
+    if (!(key in obj)) {
       Object.defineProperty(obj, key, {value})
     }
   })

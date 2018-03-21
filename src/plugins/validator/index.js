@@ -3,8 +3,8 @@ import {getType, isNull, isUndefined} from '../../common/utils/typeUtils'
 import {escapeStringRegexp} from '../../common/utils/stringUtils'
 
 // Validate string
-// required  number  float integer  date|yyyy-MM-dd hh:mm:ss
-// mobile    email   max   min maxLength minLength  idCard
+// required  number  float  integer  date|yyyy-MM-dd hh:mm:ss
+// mobile    email   max    min      maxLength minLength   idCard
 export default function (data, opts) {
   let validateResult = {}
 
@@ -78,7 +78,7 @@ const ruleList = {
     // escape string for RegExp
     fmt = escapeStringRegexp(fmt)
 
-    for (let patt of arr) {
+    arr.forEach(patt => {
       // 先用w占位,避免\d与d+冲突
       fmt = fmt.replace(new RegExp(patt), (matchStr) => {
         // 除年以外,其他的配备符只有一位时，
@@ -89,7 +89,7 @@ const ruleList = {
 
         return `\\w{${matchStr.length}}`
       })
-    }
+    })
 
     fmt.replace(/w/g, 'd')
 
@@ -104,7 +104,7 @@ const ruleList = {
     return emailRegExp.test(value)
   },
 
-  // 可以参考id-validator(可以从身份证中获取其他信息)
+  // 可以参考id-validator(可以从省份证中获取其他信息)
   idCard(value) {
     return idCardRegExp.test(value)
   }
@@ -113,16 +113,16 @@ const ruleList = {
 function validateRuleList(value, rules) {
   // the index of rule that validate failure
   let step = -1
-  let result
+  let result = undefined
 
-  for (let [index, rule] of rules.entries()) {
+  each(rules, (rule, index) => {
     result = validateRule(value, rule)
 
     if (!result) {
       step = index
-      return [result, step]
+      return false
     }
-  }
+  })
 
   return [result, step]
 }
