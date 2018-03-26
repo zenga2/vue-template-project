@@ -9,7 +9,7 @@
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "bz": "node build/build.js & node build/compress.js",
+    "bz": "node build/build.js && node build/compress.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
