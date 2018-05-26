@@ -3,7 +3,7 @@ import {each} from './utils'
 
 // 将url中的查询参数解析成对象
 function urlParse(url) {
-  url = url || window.location.search
+  url = (url || window.location.search).split('#')[0]
   let obj = {}
   let reg = /[?&][^?&]+=[^?&]+/g
   let arr = url.match(reg)
