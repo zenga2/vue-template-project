@@ -1,7 +1,7 @@
 import {padLeft} from './stringUtils'
 
 // fmt eg: 'yyyy-MM-dd hh:mm:ss'
-function formate(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
+function format(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
   let matchStr
   let obj = {
     '(M+)': date.getMonth() + 1,
@@ -134,6 +134,6 @@ function isLeapYear(year) {
 }
 
 export {
-  formate, modifyDate, parse,
+  format, modifyDate, parse,
   calculateDuration, msToStr, isLeapYear
 }
